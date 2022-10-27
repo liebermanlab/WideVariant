@@ -1,0 +1,2 @@
+# Snakemake pipeline wishlist
+
