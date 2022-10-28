@@ -5,6 +5,12 @@ Add list of changes made for this version.
 
 
 =========CHANGE LOG=========
+=====Arolyn, 2022.10.28=====
+
+Removed old bowtie2_qc output from rule all (was left there by mistake when bowtie2_qc was modified to work with multiple reference genomes)
+
+
+=========CHANGE LOG=========
 =====AROLYN, 2022.10.27=====
 
 Added comments to main files.
