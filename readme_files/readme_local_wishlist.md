@@ -1,6 +1,15 @@
 # Local analysis wishlist
 
 
+## Modules with additional functionality
+
+In the future, we should add the following modules to the local analysis script:
+* Adaptive evolution analysis: look for parallel evolution and compute dN/dS (N/S compared to neutral model)
+	* Status: 
+* Gain/loss analysis: use coverage matrices to find genes that are missing from some samples in the lineage
+	* Status: Arolyn and Felix developed an amplification/deletion python script which could be incorporated into this version. Arolyn also made a gain/loss script in matlab which could be re-coded in python. 
+* Additional treemaking: implement treecounting script
+	* Status: This was implemented in previous python analysis script (should be relatively easy to incorporate).
 
 
 ## Table of contents

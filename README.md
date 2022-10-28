@@ -1,15 +1,15 @@
 # Lieberman Lab pipeline tutorial
 
-This is a tutorial for running the Lieberman Lab's core pipelines.
+## Overview
 
-## Pipeline overview
+This is a tutorial for running the Lieberman Lab's core pipelines.
 
 There are two components...
 
 
 ## Snakemake pipelines
 
-[Here](readme_files/readme_snake_main.md) is more information about the snakemake pipelines.
+[Here](readme_files/readme_snake_main.md) is more information about the snakemake pipeline.
 
 
 ## Local python analysis
