@@ -1,12 +1,12 @@
-# Snakemake pipeline
+# Helpful hints for using the command line
 
-This is a tutorial for snakemake portion of the Lieberman Lab's core pipelines.
+## Bash basics
 
 
-## Snakemake
+## SLURM basics
 
-A detailed description of snakemake rules can be found [here](readme_snake_rules.md)
 
+## Snakemake basics
 
 
 ## Table of contents

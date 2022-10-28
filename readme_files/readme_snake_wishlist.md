@@ -1,12 +1,14 @@
-# Snakemake pipeline
+# Wishlist for snakemake pipeline upgrads
 
-This is a tutorial for snakemake portion of the Lieberman Lab's core pipelines.
+## General
 
+## Mapping step
 
-## Snakemake
+## Case step
 
-A detailed description of snakemake rules can be found [here](readme_snake_rules.md)
+## Assembly step
 
+## Bracken step
 
 
 ## Table of contents

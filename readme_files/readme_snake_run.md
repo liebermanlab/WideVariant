@@ -1,11 +1,11 @@
-# Snakemake pipeline
+# How to run the snakemake pipeline
 
-This is a tutorial for snakemake portion of the Lieberman Lab's core pipelines.
+## Required files
 
 
-## Snakemake
 
-A detailed description of snakemake rules can be found [here](readme_snake_rules.md)
+## How to run snakemake
+
 
 
 
@@ -15,9 +15,8 @@ A detailed description of snakemake rules can be found [here](readme_snake_rules
 * [Snakemake pipeline](readme_snake_main.md)
 	* [How to run the snakemake pipeline](readme_snake_run.md)
 	* [Technical information on the snakemake pipeline](readme_snake_rules.md)
-	* [Wishlist for snakemake pipeline upgrades](readme_snake_wishlist.md)
 	* [Helpful hints for using the command line](readme_snake_basics.md)
+	* [Wishlist for snakemake pipeline upgrades](readme_snake_wishlist.md)
 * [Local analysis](readme_local_main.md)
 	* [How to run the local analysis script](readme_local_run.md)
 	* [Wishlist for local analysis upgrades](readme_local_wishlist.md)
-	* [Python best practices](readme_local_best.md)

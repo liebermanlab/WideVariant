@@ -1,0 +1,11 @@
+Path,Sample,FileName,Reference,Group,Outgroup
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,A:441-Scr-Ch-12_t60,,Pacnes_C1,1,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,A:039-Ext-bcNoBl-1_t00,,Pacnes_C1,1,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,A:443-Scr-trBa-11_t60,,Pacnes_C1,1,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,F:189-Scr-crCh-3_t07,,Pacnes_C1,1,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,B:089-Ext-clChBs-1_t00,,Pacnes_C1,1,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,A:441-Scr-Ch-12_t60,,cacnes_clade_1,2,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,A:039-Ext-bcNoBl-1_t00,,cacnes_clade_1,2,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,A:443-Scr-trBa-11_t60,,cacnes_clade_1,2,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,F:189-Scr-crCh-3_t07,,cacnes_clade_1,2,0
+/scratch/mit_lieberman/projects/gus/tests/mapping_only,B:089-Ext-clChBs-1_t00,,cacnes_clade_1,2,0
