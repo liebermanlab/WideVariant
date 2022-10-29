@@ -13,7 +13,7 @@ Here is a graph summarizing how the Snakemake rules relate to each other in the 
   src="fig_rulegraph_all.png"
   alt="Rule graph"
   title="Rule graph for generating a candidate mutation table"
-  style="display: inline-block; margin: 0 auto; max-width: 300px">
+  style="display: inline-block; text-align: center; margin: 0 auto; max-width: 250px">
 
 
 ## Rule all
