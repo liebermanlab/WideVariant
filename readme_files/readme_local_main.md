@@ -32,13 +32,15 @@ False-negative SNVs can arise from:
 
 ...and more reasons not listed here!
 
+
 ### Reference genome considerations
 
 The reference genome is the genome to which you align reads from your samples. Ideally, your reference genome is closely related to your samples. 
 
 If your reference genome is not closely related to your samples, then you may miss SNVs on genes that are not present in your reference genome or you may have issues with reads from your samples aligning poorly to the reference. 
 
-Building a co-assembly from your samples is a good way to ensure you have a closely related reference genome. However, you can still run into issues with read alignments on areas where the assembly was challenging, and you can run into additional problems if the reads going into your assembly were not pure (contamination can give rise to extra contigs representing gene content that is not present truly present in your samples).
+Building a co-assembly from your samples is a good way to ensure you have a closely related reference genome. However, you can still run into issues with read alignments on areas where the assembly was challenging, and you can run into additional problems if the reads going into your assembly were not pure (contamination can give rise to extra contigs representing gene content that is not present truly present in your samples). In the case that the reads going into the co-assembly contained low-level contamination, it may be worthwhile to filter the contigs in the assembly before attempting to call SNVs.
+
 
 ### Ancestral alleles and outgroups
 
@@ -61,7 +63,7 @@ Here is a [wishlist](readme_local_wishlist.md) of features to add to the current
 [Main Lieberman Lab pipeline README](../README.md)
 * [Snakemake pipeline](readme_snake_main.md)
 	* [How to run the snakemake pipeline](readme_snake_run.md)
-	* [Technical information on the snakemake pipeline](readme_snake_rules.md)
+	* [Technical details about the snakemake pipeline](readme_snake_rules.md)
 	* [Wishlist for snakemake pipeline upgrades](readme_snake_wishlist.md)
 	* [Helpful hints for using the command line](readme_snake_basics.md)
 * [Local analysis](readme_local_main.md)
