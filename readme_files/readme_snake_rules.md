@@ -10,7 +10,7 @@ This page includes some additional context about the Snakemake rules defined in 
 Here is a graph summarizing how the Snakemake rules relate to each other in the workflow:
 
 <img
-  src="fig_rulegraph_all.pdf"
+  src="fig_rulegraph_all.png"
   alt="Rule graph"
   title="Rule graph for generating a candidate mutation table"
   style="display: inline-block; margin: 0 auto; max-width: 300px">
