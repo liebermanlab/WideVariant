@@ -7,7 +7,7 @@ This page includes some additional context about the Snakemake rules defined in 
 
 ## Rule graph
 
-Here is a graph summarizing how the Snakemake rules relate to each other in the workflow: 
+Here is a graph summarizing how the Snakemake rules relate to each other in the workflow:
 
 <img
   src="fig_rulegraph_all.pdf"
