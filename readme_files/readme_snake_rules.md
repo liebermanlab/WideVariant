@@ -5,6 +5,16 @@ A Snakemake rule is a step of the pipeline that can be executed, depending on wh
 This page includes some additional context about the Snakemake rules defined in `Snakefile.py`, beyond what is already available in the comments. If applicable, links to external documentation for bioinformatics tools are included in the rule descriptions.
 
 
+## Rule graph
+
+Here is a graph summarizing how the Snakemake rules relate to each other in the workflow: 
+
+<img
+  src="fig_rulegraph_all.pdf"
+  alt="Rule graph"
+  title="Rule graph for generating a candidate mutation table"
+  style="display: inline-block; margin: 0 auto; max-width: 300px">
+
 
 ## Rule all
 
