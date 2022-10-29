@@ -232,7 +232,7 @@ if flag=="mapping" or flag=="all":
         input:
             fq1 = rules.sickle2050.output.fq1o,
             fq2 = rules.sickle2050.output.fq2o,
-            bowtie2idx = ancient(rules.refGenome_index.output.bowtie2idx) # put here, so rule botie2 only executed after rule refGenome_index done
+            bowtie2idx = ancient(rules.refGenome_index.output.bowtie2idx) # put here, so rule bowtie2 only executed after rule refGenome_index done
         params:
             refGenome = REF_GENOME_DIRECTORY+"/{reference}/genome_bowtie2",
         output:
@@ -260,7 +260,7 @@ if flag=="mapping" or flag=="all":
             "python3 {SCRIPTS_DIRECTORY}/bowtie2qc.py -s {spls} -r {wildcards.reference} -d {CURRENT_DIRECTORY} -o {params.outfile_noextension}"
 
 
-    # Converts SAM file into BAM file
+    # Compresses SAM file into BAM file (and removes duplicate reads)
     rule sam2bam:
         input:
             samA = rules.bowtie2.output.samA,
