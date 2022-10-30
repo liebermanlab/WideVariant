@@ -210,7 +210,10 @@ External documentation: none
 
 
 
-## Assembly step
+## Assembly (alternative workflow)
+
+The assembly workflow generates annotated assemblies for each sample. Below is a description of snakemake rules specific to the assembly step (excluding the data processing steps already described [above](#data_processing)).
+
 
 ### Rule graph
 
@@ -263,7 +266,10 @@ External documentation: [CD-HIT](https://sites.google.com/view/cd-hit)
 
 
 
-## Bracken step
+## Bracken (alternative workflow)
+
+The bracken workflow generates estimates of taxonomic abundance for each sample. Below is a description of snakemake rules specific to the assembly step (excluding the data processing steps already described [above](#data_processing)).
+
 
 ### Rule graph
 
