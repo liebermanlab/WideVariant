@@ -1,6 +1,6 @@
 # Snakemake pipeline
 
-This is a tutorial for snakemake portion of the Lieberman Lab's core pipelines.
+This is a tutorial for Snakemake portion of the Lieberman Lab's core pipelines.
 
 
 ## Overview
