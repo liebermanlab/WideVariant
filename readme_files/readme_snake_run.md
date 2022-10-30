@@ -120,6 +120,15 @@ A dryrun will catch any issues with incorrect file paths, missing input files, o
 
 You can perform a dryrun by typing `snakemake -s Snakefile.py -n -p -c1` into the terminal. Be sure that you are in your Snakemake working directory (the same directory that contains `Snakefile.py`) when you do this.
 
+You can also generate a DAG to visualize the Snakemake workflow (`snakemake -s Snakefile.py --dag | dot -Tpdf > dag.pdf`). It should look something like this:
+
+<img
+  src="fig_dag_all.png"
+  alt="DAG"
+  title="Example DAG for generating a candidate mutation table"
+  style="display: inline-block; margin: 0 auto; max-width: 300px">
+
+
 ### Batch the Snakemake workflow to the cluster
 
 To batch the Snakemake workflow to the cluster, type `sbatch myjob.slurm` into the terminal.

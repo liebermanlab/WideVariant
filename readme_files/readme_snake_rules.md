@@ -13,7 +13,7 @@ Here is a graph summarizing how the Snakemake rules relate to each other in the 
   src="fig_rulegraph_all.png"
   alt="Rule graph"
   title="Rule graph for generating a candidate mutation table"
-  style="display: inline-block; text-align: center; margin: 0 auto; max-width: 250px">
+  style="display: inline-block; margin: 0 auto; max-width: 250px">
 
 
 ## Rule all
@@ -212,6 +212,15 @@ External documentation: none
 
 ## Assembly step
 
+### Rule graph
+
+<img
+  src="fig_rulegraph_assembly.png"
+  alt="Rule graph"
+  title="Rule graph for the bracken version of the Snakemake workflow"
+  style="display: inline-block; margin: 0 auto; max-width: 250px">
+
+
 ### `spades`
 
 Purpose: Assemble a genome from reads from a given sample using SPAdes
@@ -255,6 +264,15 @@ External documentation: [CD-HIT](https://sites.google.com/view/cd-hit)
 
 
 ## Bracken step
+
+### Rule graph
+
+<img
+  src="fig_rulegraph_bracken.png"
+  alt="Rule graph"
+  title="Rule graph for the bracken version of the Snakemake workflow"
+  style="display: inline-block; margin: 0 auto; max-width: 250px">
+
 
 ### `FQ2FA`
 
