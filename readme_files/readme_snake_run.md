@@ -118,7 +118,43 @@ Before moving on, be sure to activate your Snakemake environment (`conda activat
 
 A dryrun will catch any issues with incorrect file paths, missing input files, or improper syntax in your Snakefile. A successful dryrun will print out a list of which Snakemake rules will be executed and how many times each one will need to be executed (e.g. the rule `cutadapt` will be executed N times where N is the number of samples you put in `samples.csv`)
 
-You can perform a dryrun by typing `snakemake -s Snakefile.py -n -p -c1` into the terminal. Be sure that you are in your Snakemake working directory (the same directory that contains `Snakefile.py`) when you do this.
+You can perform a dryrun by typing `snakemake -s Snakefile.py -n -p -c1` into the terminal. Be sure that you are in your Snakemake working directory (the same directory that contains `Snakefile.py`) when you do this. The output should include a tally of how many times each Snakemake rule will be executed. Here is an example job tally where there are 8 samples, 4 of which are aligned to one reference genome and the other 4 of which are aligned to another reference genome:
+
+```
+Job stats:
+job                              count    min threads    max threads
+-----------------------------  -------  -------------  -------------
+all                                  1              1              1
+bowtie2                              8              1              1
+bowtie2qc                            2              1              1
+candidate_mutation_table             2              1              1
+candidate_mutation_table_prep        2              1              1
+combine_positions                    2              1              1
+combine_positions_prep               2              1              1
+cutadapt                             8              1              1
+make_data_links                      8              1              1
+mpileup2vcf                          8              1              1
+pileup2diversity_matrix              8              1              1
+refGenome_index                      2              1              1
+sam2bam                              8              1              1
+sam2bam_cleanup                      8              1              1
+samtools_idx                         2              1              1
+sickle2050                           8              1              1
+variants2positions                   8              1              1
+vcf2quals                            8              1              1
+total                               95              1              1
+
+This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.
+```
+
+You can also generate a DAG to visualize the Snakemake workflow (`snakemake -s Snakefile.py --dag | dot -Tpdf > dag.pdf`). It should look something like this:
+
+<img
+  src="fig_dag_all.png"
+  alt="DAG"
+  title="Example DAG for generating a candidate mutation table"
+  style="display: inline-block; margin: 0 auto; max-width: 300px">
+
 
 ### Batch the Snakemake workflow to the cluster
 

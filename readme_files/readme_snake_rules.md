@@ -5,6 +5,16 @@ A Snakemake rule is a step of the pipeline that can be executed, depending on wh
 This page includes some additional context about the Snakemake rules defined in `Snakefile.py`, beyond what is already available in the comments. If applicable, links to external documentation for bioinformatics tools are included in the rule descriptions.
 
 
+## Rule graph
+
+Here is a graph summarizing how the Snakemake rules relate to each other in the workflow:
+
+<img
+  src="fig_rulegraph_all.png"
+  alt="Rule graph"
+  title="Rule graph for generating a candidate mutation table"
+  style="display: inline-block; margin: 0 auto; max-width: 250px">
+
 
 ## Rule all
 
@@ -200,7 +210,19 @@ External documentation: none
 
 
 
-## Assembly step
+## Assembly (alternative workflow)
+
+The assembly workflow generates annotated assemblies for each sample. Below is a description of snakemake rules specific to the assembly step (excluding the data processing steps already described [above](#data_processing)).
+
+
+### Rule graph
+
+<img
+  src="fig_rulegraph_assembly.png"
+  alt="Rule graph"
+  title="Rule graph for the bracken version of the Snakemake workflow"
+  style="display: inline-block; margin: 0 auto; max-width: 250px">
+
 
 ### `spades`
 
@@ -244,7 +266,19 @@ External documentation: [CD-HIT](https://sites.google.com/view/cd-hit)
 
 
 
-## Bracken step
+## Bracken (alternative workflow)
+
+The bracken workflow generates estimates of taxonomic abundance for each sample. Below is a description of snakemake rules specific to the assembly step (excluding the data processing steps already described [above](#data_processing)).
+
+
+### Rule graph
+
+<img
+  src="fig_rulegraph_bracken.png"
+  alt="Rule graph"
+  title="Rule graph for the bracken version of the Snakemake workflow"
+  style="display: inline-block; margin: 0 auto; max-width: 250px">
+
 
 ### `FQ2FA`
 

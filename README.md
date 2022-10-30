@@ -16,7 +16,7 @@ The purpose of this pipeline is to detect single nucleotide differences between 
 The pipeline is split into two main components, as described below.
 
 
-### 1. Snakemake pipeline
+## 1. Snakemake pipeline
 
 The first portion of the pipeline aligns raw sequencing data from bacterial isolates to a reference genome and identifies candidate SNV positions. This step is implemented in a workflow management system called [Snakemake](http://snakemake.readthedocs.io) and is executed on a [SLURM cluster](https://slurm.schedmd.com/documentation.html). More information is available [here](readme_files/readme_snake_main.md).
 
