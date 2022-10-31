@@ -5,11 +5,21 @@
 
 In the future, we should add the following modules to the local analysis script:
 * Adaptive evolution analysis: look for parallel evolution and compute dN/dS (N/S compared to neutral model)
-	* Status: 
+	* Status: Arolyn has a nice version in Matlab, but it hasn't been coded in python yet.
 * Gain/loss analysis: use coverage matrices to find genes that are missing from some samples in the lineage
 	* Status: Arolyn and Felix developed an amplification/deletion python script which could be incorporated into this version. Arolyn also made a gain/loss script in matlab which could be re-coded in python. 
 * Additional treemaking: implement treecounting script
 	* Status: This was implemented in previous python analysis script (should be relatively easy to incorporate).
+
+
+## Changes to existing functions
+
+* Rewrite functions that generate genome annotations from scratch (they are messy)
+
+
+## Environment/python version
+
+* Upgrade to Python 3.11 (for [faster CPython](https://docs.python.org/3/whatsnew/3.11.html#whatsnew311-faster-cpython))
 
 
 ## Table of contents

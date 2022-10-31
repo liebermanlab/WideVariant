@@ -8,7 +8,9 @@
 
 ## Mapping step
 
-* Fix outstanding issues with de-duplicating reads
+* Use updated version of samtools for rule `mpileup2vcf` (env: `samtools15_bcftools12.yaml`)
+	* Version in rule `sam2bam` was already updated to enable deduplication (env: `samtools115.yaml`)
+* Fix outstanding issues with de-duplicating reads and metagenomic data files
 * ...
 
 

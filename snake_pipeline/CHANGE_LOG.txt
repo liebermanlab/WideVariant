@@ -5,6 +5,12 @@ Add list of changes made for this version.
 
 
 =========CHANGE LOG=========
+=====Arolyn/Evan, 2022.10.31=====
+
+Added -f flag to second rm in snake rule sam2bam_cleanup to avoid errors if files have already been cleaned up
+
+
+=========CHANGE LOG=========
 =====Arolyn, 2022.10.28=====
 
 Removed old bowtie2_qc output from rule all (was left there by mistake when bowtie2_qc was modified to work with multiple reference genomes)

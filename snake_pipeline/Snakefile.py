@@ -300,7 +300,7 @@ if flag=="mapping" or flag=="all":
         priority: 100, # prioritizes this rule to get rid of big sam files as fast as possible; default priority for other rules is 0
         shell:
             # -f for cases where sam file doesn't exist (e.g. job previously cancelled/stalled after file deleted but before log file written)
-            " rm -f {params.samA} ; rm {params.bamDup} {params.bamDupMate} {params.bamDupMateSort} ;"
+            " rm -f {params.samA} ; rm -f {params.bamDup} {params.bamDupMate} {params.bamDupMateSort} ;"
             " touch {output} ;" 
 
 
