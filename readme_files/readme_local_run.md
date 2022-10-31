@@ -29,7 +29,7 @@ Finally, you will need to have already generated a candidate mutation table and 
 
 If you have not done so already, you should [install conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) on your local machine. Conda is a package management system and environment management system. This helps ensure that the python packages (and their dependencies) that you need to run the local analysis scripts are installed correctly and that the lab's code is reproducible.
 
-Once conda is installed, you can create a python coding environment: ```conda env create -f environment.yaml```.
+Once conda is installed, you can create the python coding environment: ```conda env create -f pythoncoding.yaml```. 
 
 Then you can activate your new environment (called `pythoncoding`, as defined in the yaml file you used to create the environment): ```conda activate pythoncoding```.
 

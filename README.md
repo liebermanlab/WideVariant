@@ -11,20 +11,24 @@ The purpose of this pipeline is to detect single nucleotide differences between 
 	* an annotated reference genome
 * Outputs: 
 	* table of high-quality SNVs that differentiate isolates from each other
-	* parsimony tree that visualizes how the isolates are related to each other 
+	* parsimony tree of how the isolates are related to each other 
 
 The pipeline is split into two main components, as described below.
 
 
-## 1. Snakemake pipeline
+### 1. Snakemake pipeline
 
 The first portion of the pipeline aligns raw sequencing data from bacterial isolates to a reference genome and identifies candidate SNV positions. This step is implemented in a workflow management system called [Snakemake](http://snakemake.readthedocs.io) and is executed on a [SLURM cluster](https://slurm.schedmd.com/documentation.html). More information is available [here](readme_files/readme_snake_main.md).
 
 
-## 2. Local python analysis
+### 2. Local python analysis
 
 The second portion of the pipeline filters candidate SNVs based on data arrays generated in the first portion and generates a high-quality SNV table and a parsimony tree. This step is implemented with a custom python script. More information can be found [here](readme_files/readme_local_main.md).
 
+
+## Motivation
+
+(Tami to add section here.)
 
 
 ## Example use cases

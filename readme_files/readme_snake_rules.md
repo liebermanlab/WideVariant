@@ -132,9 +132,9 @@ Notes:
 Samtools flags:
 * `samtools mpileup` - produces "pileup" textual format from an alignment
 	* `-q30` - minimum mapping quality for an alignment to be used
-	* `-x` - ???
+	* `-x` - turns off read-pair overlap detection and removal
 	* `-s` - record mapping quality in output file
-	* `-O` - turns off read-pair overlap detection and removal
+	* `-O` - output base positions on reads in orientation listed in the SAM file (left to right)
 	* `-d3000` - maximum number of reads at a given position to include (skips reads over this coverage threshold)
 	* `-t SP` - for Phred-scaled strand bias P-value
 * `bcftools call` - SNP calling
