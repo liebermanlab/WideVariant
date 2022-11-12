@@ -56,7 +56,7 @@ Purpose: Trims reads based on quality with sickle
 
 Sickle flags: 
 * `pe` - paired-end reads
-* `-t sanger` - 
+* `-t sanger` - specify type of quality value ([background on why this flag is `sanger` not `illumina`](https://en.wikipedia.org/wiki/FASTQ_format#Quality))
 * `-q 20` - quality threshold
 * `-l 20` - discard trimmed reads smaller than this length
 * `-x` - do not trim from 5’ end (trim from 3’ end only)

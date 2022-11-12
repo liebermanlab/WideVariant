@@ -3,6 +3,10 @@
 
 ## General
 
+* Align output of case step with input to local analysis scripts. 
+	* Currently there is a function in the local analysis script to convert the data objects into the expected inputs for generating an instance of the candidate mutation table custom python class. 
+	* Ideally `build_candidate_mutation_table.py`  would be harmonized with the local analysis scripts, make data objects of the right type and dimensions, and generate an instance of the candidate mutation table class.
+	* It would also be great to generate an instance of the new coverage matrix class as part of the cluster step too. This would also involve modifying `build_candidate_mutation_table.py`.
 * ...
 
 

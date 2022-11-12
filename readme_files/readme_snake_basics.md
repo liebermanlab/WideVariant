@@ -1,10 +1,10 @@
 # Helpful hints for using the command line
 
 This page covers the command-line basics of:
-* [Bash](#bash_basics) - command-line shell on Unix operating systems
-* [Slurm](#Slurm_basics) - workload manager for Linux clusters
-* [Conda](#Conda_basics) - package and environment management system
-* [Snakemake](#Snakemake_basics) - workflow management system designed for bioinformatics pipelines
+* [Bash](#bash-basics) - command-line shell on Unix operating systems
+* [Slurm](#Slurm-basics) - workload manager for Linux clusters
+* [Conda](#Conda-basics) - package and environment management system
+* [Snakemake](#Snakemake-basics) - workflow management system designed for bioinformatics pipelines
 
 
 ## Bash basics
