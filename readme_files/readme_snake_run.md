@@ -206,7 +206,7 @@ Here is a summary of each output file created by this Snakemake workflow:
 		* `indel_counter` - numpy array of statistics on the number of reads supporting insertions and deletions at each position for each sample
 			* Dimensions: (number of samples) x (number of candidate SNV positions) x 2
 
-#TODO: The above summary represents what these data objects will look like once the output of the Snakemake step is harmonized with the expected inputs of the local analysis step.
+IMPORTANT NOTE: The above summary represents what these data objects will look like once the output of the Snakemake step is harmonized with the expected inputs of the local analysis step. This has not been updated yet--see [Wishlist for snakemake pipeline upgrades](readme_snake_wishlist.md). The names of the objects are the same, but some of the types and dimensions are different. You can convert them into the right types/dimensions with a quick function at the beginning of the local analysis script. 
 
 If you modified `Snakefile.py` to generate coverage matrices, you will get additional output files:
 * `2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_raw.pickle.gz`

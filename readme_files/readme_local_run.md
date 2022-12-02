@@ -72,7 +72,7 @@ Signatures of high-quality SNVs include:
 * consistent basecalls in forward and reverse reads
 * consitent number of reads aligned in the forward and reverse directions
 
-Signs of questionable SNVs include:
+Signatures of questionable SNVs include:
 * impure alleles (alignment issues or contamination issues)
 * differences in the basecalls in forward vs reverse reads (alignment issues)
 * differences in the number of forward vs reverse reads (alignment issues)
