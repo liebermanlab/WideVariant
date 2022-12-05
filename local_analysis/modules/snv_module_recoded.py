@@ -173,7 +173,8 @@ def nts_rev_comp( np_array_of_NTs ):
     return NTs_reverse_complement
 
 # List for looping through nucleotides
-NTs_list_without_N =['A','T','C','G']
+NTs_list_without_N = ['A','T','C','G']
+NTs_list_without_N_to_int_dict = { 'A':0, 'T':1, 'C':2, 'G':3 }
 
 
 ###############################################
@@ -1992,7 +1993,7 @@ def make_calls_qc_heatmaps( my_cmt, my_calls, save_plots_bool, dir_save_fig ):
 ########################
 
 
-def annotate_mutations( my_rg , p_gp , ancnti_gp , calls_gp , my_cmt_gp , hasmutation_gp , mutQual_gp, promotersize ):
+def annotate_mutations( my_rg , p_gp , ancnti_gp , calls_gp , my_cmt_gp , fixedmutation_gp , mutQual_gp, promotersize ):
     '''
     Makes a dataframe with annotations for each SNV position. 
         
@@ -2009,7 +2010,7 @@ def annotate_mutations( my_rg , p_gp , ancnti_gp , calls_gp , my_cmt_gp , hasmut
         
         my_cmt_gp: candidate mutation table data object across SNV positions
         
-        hasmutation_gp: whether or not each sample has a mutation across SNV
+        fixedmutation_gp: whether or not each sample has a mutation across SNV
         positions
         
         mutQual_gp: mutation quality (from compute_mutation_quality) for each
@@ -2094,7 +2095,7 @@ def annotate_mutations( my_rg , p_gp , ancnti_gp , calls_gp , my_cmt_gp , hasmut
                 ncn = mut_annotations['nt_pos'] - ((aan-1)*3) # get nucleotide within codon triplet (1, 2, or 3)
                 mut_annotations['aa_pos'] = aan
             
-            # Determine how a mutation *could* the codon
+            # Determine how a mutation *could* change the codon
             codons_ls = [] # init
             aa_ls = [] # init
             if len(mut_annotations['sequence']) >= (aan*3) and mut_annotations['translation'] != ".": # only for proteins
@@ -2127,15 +2128,14 @@ def annotate_mutations( my_rg , p_gp , ancnti_gp , calls_gp , my_cmt_gp , hasmut
                 mut_annotations['anc'] = "."
             # Fill in derived genotype(s) across all samples
             for j,callidx in enumerate(calls_gp[:,i]): # loop across samples
-                #fixed mutation
-                if hasmutation_gp[j,i] == True :
+                if fixedmutation_gp[j,i] == True : # fixed mutations only
                     if calls_gp[j,i] != NTs_to_int_dict['N']:
                         mut_annotations['nts'] = mut_annotations['nts'] + int_to_NTs_dict[calls_gp[j,i]]
                         if len(mut_annotations['AA']) == 4:
-                            mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ maNT_gp[j,i] ]
+                            mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_int_dict[int_to_NTs_dict[maNT_gp[j,i]]] ]
                     elif calls_gp[j,i] == -1: # if diverse (calls not a mutation), add minor and major call
-                        mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ maNT_gp[j,i] ]
-                        mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ minorNT_gp[j,i] ]
+                        mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_int_dict[int_to_NTs_dict[maNT_gp[j,i]]] ]
+                        mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_int_dict[int_to_NTs_dict[minorNT_gp[j,i]]] ]
             if len(mut_annotations['AA']) == 4:
                 mut_annotations['type'] = 'S' # eventually overwritten below if N
             # Remove duplicates

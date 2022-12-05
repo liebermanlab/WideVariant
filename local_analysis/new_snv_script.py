@@ -81,9 +81,6 @@ timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S') # 
 ################################
 
 
-#%% Directories
-
-
 #%% Dataset info
 
 dataset_name = 'Escherichia_coli_P-11'
@@ -96,6 +93,7 @@ samples_to_exclude = [] # option to exclude specific samples manually
 # Make subdirectory for this dataset
 dir_output = 'output'
 os.system( "mkdir -p " + dir_output );
+
 
 
 #%% Generate candidate mutation table object
@@ -237,7 +235,8 @@ my_calls.filter_calls_by_element(
     my_cmt.major_nt_freq < filter_parameter_site_per_sample['min_major_nt_freq_for_call'] 
     ) # major allele frequency too low
 
-# Filter positions with indels
+
+#%% Filter positions with indels
 
 with np.errstate(divide='ignore',invalid='ignore'):
     # compute number of reads supporting an indel
@@ -382,6 +381,12 @@ filter_parameter_recombination = {
     filter_parameter_recombination['corr_threshold_recombination'], \
     True, dir_output \
     )
+    
+# Save positions with likely recombination
+if len(p_recombo)>0:
+    with open( dir_output + '/snvs_from_recombo.csv', 'w') as f:
+        for p in p_recombo:
+            f.write(str(p)+'\n')
 
 
 
@@ -391,7 +396,7 @@ filter_parameter_recombination = {
 filter_SNVs_not_N = ( calls_ingroup != snv.nts2ints('N') ) # mutations must have a basecall (not N)
 filter_SNVs_not_ancestral_allele = ( calls_ingroup != np.tile( calls_ancestral, (num_samples_ingroup,1) ) ) # mutations must differ from the ancestral allele
 filter_SNVs_quals_not_NaN = ( np.tile( mut_qual, (num_samples_ingroup,1) ) >= 1) # alleles must have strong support 
-filter_SNVs_not_recombo = np.tile( recombo_bool, (num_samples_ingroup,1) )
+filter_SNVs_not_recombo = np.tile( np.logical_not(recombo_bool), (num_samples_ingroup,1) ) # mutations must not be due to suspected recombination
 
 # Fixed mutations per sample per position
 fixedmutation = \
@@ -400,11 +405,13 @@ fixedmutation = \
     & filter_SNVs_quals_not_NaN \
     & filter_SNVs_not_recombo # boolean
 
-hasmutation = np.any( (fixedmutation == True , ), axis=0)
+hasmutation = np.any( fixedmutation, axis=0) # boolean over positions (true if at lest one sample has a mutation at this position)
 
 goodpos_bool = np.any( fixedmutation, axis=0 )
 goodpos_idx = np.where( goodpos_bool )[0]
 num_goodpos = len(goodpos_idx)
+
+print('Num mutations: '+str(num_goodpos))
 
 
 
@@ -438,7 +445,7 @@ mutations_annotated = snv.annotate_mutations( \
     np.tile( calls_ancestral[goodpos_idx], (my_cmt_goodpos_ingroup.num_samples,1) ), \
     calls_goodpos_ingroup, \
     my_cmt_goodpos_ingroup, \
-    hasmutation[:,goodpos_idx], \
+    fixedmutation[:,goodpos_idx], \
     mut_qual[:,goodpos_bool].flatten(), \
     promotersize \
     ) 
