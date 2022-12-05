@@ -66,7 +66,7 @@ from scipy import stats
 import datetime, time
 
 # Import Lieberman Lab SNV-calling python package
-dir_py_scripts = "/Users/arolyn/Dropbox (MIT)/Postdoc/Research/CLABSI/analysis_v2/modules" 
+dir_py_scripts = "/Users/arolyn/Dropbox (MIT)/Postdoc/Research/PyPipeline/GitHub/local_analysis/modules" 
 sys.path.insert(0, dir_py_scripts)
 import snv_module_recoded as snv # SNV calling module
 
@@ -566,7 +566,7 @@ if num_goodpos>0:
         mut_qual[0,goodpos_idx], \
         my_cmt_goodpos.sample_names, \
         mutations_annotated, \
-        calls_for_tree_all, \
+        calls_for_tree, \
         treesampleNamesLong, \
         output_tsv_filename \
         )
@@ -636,4 +636,3 @@ if type(my_cov) == snv.cov_data_object:
         my_cov.make_coverage_trace(contig_num,100,dir_output);
 elif type(my_cov) == snv.cov_data_object_simple:
     print('Coverage matrix object type is cov_data_obj_simple, not cov_data_obj. Raw coverage matrix not available for copy number traces.')
-
