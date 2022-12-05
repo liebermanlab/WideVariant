@@ -172,9 +172,9 @@ def nts_rev_comp( np_array_of_NTs ):
     NTs_reverse_complement = np.flip( NTs_complement )
     return NTs_reverse_complement
 
-# List for looping through nucleotides
+# List for looping through nucleotides (NOT for encoding nucleotides in data)
 NTs_list_without_N = ['A','T','C','G']
-NTs_list_without_N_to_int_dict = { 'A':0, 'T':1, 'C':2, 'G':3 }
+NTs_list_without_N_to_idx_dict = { 'A':0, 'T':1, 'C':2, 'G':3 }
 
 
 ###############################################
@@ -2132,10 +2132,10 @@ def annotate_mutations( my_rg , p_gp , ancnti_gp , calls_gp , my_cmt_gp , fixedm
                     if calls_gp[j,i] != NTs_to_int_dict['N']:
                         mut_annotations['nts'] = mut_annotations['nts'] + int_to_NTs_dict[calls_gp[j,i]]
                         if len(mut_annotations['AA']) == 4:
-                            mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_int_dict[int_to_NTs_dict[maNT_gp[j,i]]] ]
+                            mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_idx_dict[int_to_NTs_dict[maNT_gp[j,i]]] ]
                     elif calls_gp[j,i] == -1: # if diverse (calls not a mutation), add minor and major call
-                        mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_int_dict[int_to_NTs_dict[maNT_gp[j,i]]] ]
-                        mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_int_dict[int_to_NTs_dict[minorNT_gp[j,i]]] ]
+                        mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_idx_dict[int_to_NTs_dict[maNT_gp[j,i]]] ]
+                        mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_idx_dict[int_to_NTs_dict[minorNT_gp[j,i]]] ]
             if len(mut_annotations['AA']) == 4:
                 mut_annotations['type'] = 'S' # eventually overwritten below if N
             # Remove duplicates
