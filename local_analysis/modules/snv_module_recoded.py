@@ -2122,7 +2122,7 @@ def annotate_mutations( my_rg , p_gp , ancnti_gp , calls_gp , my_cmt_gp , fixedm
                 mut_annotations['anc'] = int_to_NTs_dict[np.unique(ancnti_gp[:,i])[0]]
                 mut_annotations['nts'] = mut_annotations['anc'] # add ancestral allele to observed NTs; will add other NTs later
                 if len(mut_annotations['AA']) == 4:
-                    mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ np.unique(ancnti_gp[:,i])[0] ] # the AA list order corresponds to NTs list! 
+                    mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_idx_dict[int_to_NTs_dict[np.unique(ancnti_gp[:,i])[0]]] ] # the AA list order corresponds to NTs list! 
             else: # ancestral allele not known, so cannot evaluate if mutations changed the codon
                 mut_annotations['nts'] = "."
                 mut_annotations['anc'] = "."
@@ -2137,7 +2137,7 @@ def annotate_mutations( my_rg , p_gp , ancnti_gp , calls_gp , my_cmt_gp , fixedm
                         mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_idx_dict[int_to_NTs_dict[maNT_gp[j,i]]] ]
                         mut_annotations['AA_gt'] = mut_annotations['AA_gt'] + mut_annotations['AA'][ NTs_list_without_N_to_idx_dict[int_to_NTs_dict[minorNT_gp[j,i]]] ]
             if len(mut_annotations['AA']) == 4:
-                mut_annotations['type'] = 'S' # eventually overwritten below if N
+                mut_annotations['type'] = 'S' # initialize as S; eventually overwritten below if N
             # Remove duplicates
             mut_annotations['nts'] = ''.join(OrderedDict.fromkeys( mut_annotations['nts'] ).keys()) # get only unique nucleotides and keep order
             mut_annotations['AA_gt'] = ''.join(OrderedDict.fromkeys( mut_annotations['AA_gt'] ).keys()) # get only unique AAs and keep order
