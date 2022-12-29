@@ -31,16 +31,6 @@ The first portion of the pipeline aligns raw sequencing data from bacterial isol
 The second portion of the pipeline filters candidate SNVs based on data arrays generated in the first portion and generates a high-quality SNV table and a parsimony tree. This step is implemented with a custom python script. More information can be found [here](readme_files/readme_local_main.md).
 
 
-
-## Example use cases
-
-Previous iterations of this pipeline have been used to study:
-* [_C. acnes_ biogeography in the human skin microbiome](https://www.sciencedirect.com/science/article/pii/S1931312821005783)
-* [Adaptive evolution of _S. aureus_ on patients with atopic dermatitis](https://www.biorxiv.org/content/10.1101/2021.03.24.436824v3)
-* [Adaptive evolution of _B. fragilis_ on healthy people](https://www.sciencedirect.com/science/article/pii/S1931312819301593)
-
-
-
 ## Tutorial Table of Contents
 
 [Main Lieberman Lab pipeline README](README.md)
@@ -53,3 +43,13 @@ Previous iterations of this pipeline have been used to study:
 	* [How to run the local analysis script](readme_files/readme_local_run.md)
 	* [Wishlist for local analysis upgrades](readme_files/readme_local_wishlist.md)
 	* [Python best practices](readme_files/readme_local_best.md)
+
+
+## Example use cases
+
+Previous iterations of this pipeline have been used to study:
+* [_C. acnes_ biogeography in the human skin microbiome](https://www.sciencedirect.com/science/article/pii/S1931312821005783)
+* [Adaptive evolution of _S. aureus_ on patients with atopic dermatitis](https://www.biorxiv.org/content/10.1101/2021.03.24.436824v3)
+* [Adaptive evolution of _B. fragilis_ on healthy people](https://www.sciencedirect.com/science/article/pii/S1931312819301593)
+
+
