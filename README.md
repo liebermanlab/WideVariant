@@ -1,10 +1,15 @@
-# Lieberman Lab pipeline tutorial
+# Lieberman Lab SNP calling pipeline
 
-This is a tutorial for running the Lieberman Lab's core SNV-calling pipeline.
 
 ## Overview
 
-The purpose of this pipeline is to detect single nucleotide differences between closely related bacterial isolates. 
+This pipeline and toolkit is used to detect and analyze single nucleotide differences between closely related bacterial isolates. 
+
+* Noteable features
+	* Avoids false-negative mutations due to low coverage; if a mutation is found in at least one isolate in a set, the evidence at that position will be investigated to make a best-guess call.
+	* Avoids false-positives mutations by facilitating visualization of raw data, across samples (whereas pileup formats must be investigated on a sample-by-sample basis) and changing of threshold to best fit your use case.
+	* Enables easy evolutionary analysis, including phylogenetic construction, nonsynonmous vs synonymous mutation counting, and parallel evolution
+
 
 * Inputs: 
 	* short-read sequencing data of closely related bacterial isolates
@@ -13,7 +18,7 @@ The purpose of this pipeline is to detect single nucleotide differences between 
 	* table of high-quality SNVs that differentiate isolates from each other
 	* parsimony tree of how the isolates are related to each other 
 
-The pipeline is split into two main components, as described below.
+The pipeline is split into two main components, as described below. A complete tutorial can be found at the bottom of this page.
 
 
 ### 1. Snakemake pipeline
@@ -26,10 +31,6 @@ The first portion of the pipeline aligns raw sequencing data from bacterial isol
 The second portion of the pipeline filters candidate SNVs based on data arrays generated in the first portion and generates a high-quality SNV table and a parsimony tree. This step is implemented with a custom python script. More information can be found [here](readme_files/readme_local_main.md).
 
 
-## Motivation
-
-(Tami to add section here.)
-
 
 ## Example use cases
 
@@ -40,7 +41,7 @@ Previous iterations of this pipeline have been used to study:
 
 
 
-## Table of contents
+## Tutorial Table of Contents
 
 [Main Lieberman Lab pipeline README](README.md)
 * [Snakemake pipeline](readme_files/readme_snake_main.md)
