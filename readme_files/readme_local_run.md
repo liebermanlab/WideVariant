@@ -20,7 +20,7 @@ You will also need to supply information on your reference genome:
 
 Finally, you will need to have already generated a candidate mutation table and coverage matrix using the snakemake pipeline:
 * `/path/to/data/candidate_mutation_table.pickle.gz` - candidate SNV positions along with statistics about the read alignments from each sample at these positions
-* `/path/to/data/cov_raw_sparsecsr_mat.npz` - raw coverage matrix containing information on the number of reads from each sample aligned to each position on the genome
+* (optional) `/path/to/data/group_{cladeID}_coverage_matrix_raw.pickle.gz` - raw coverage matrix containing information on the number of reads from each sample aligned to each position on the genome. See documentation on the Snakemake step and comments in the Snakefile for more info on coverage matrices. A coverage matrix is necessary if you want to filter SNVs based on coverage or if you want to analyize contig presence/absence. 
 
 
 ## 2. Set up your python environment and IDE
