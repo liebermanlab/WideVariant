@@ -273,7 +273,7 @@ if flag=="mapping" or flag=="all":
             bamA = "1-Mapping/bowtie2/{sampleID}_ref_{reference}_aligned.sorted.bam",
             bamAidx = "Mapping/clade_assemblies/3-bowtie2/{sampleID}_ref_{reference}_aligned.sorted.bam.bai",
         conda:
-            "envs/samtools115.yaml",
+            "envs/samtools116.yaml",
         shadow: # avoids leaving leftover temp files esp if job aborted
             "minimal", 
         shell:
