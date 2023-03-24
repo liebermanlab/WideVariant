@@ -1,4 +1,4 @@
-# Lieberman Lab SNP calling pipeline
+# WideVariant: Lieberman Lab SNP calling pipeline
 
 
 ## Overview
