@@ -1,4 +1,4 @@
-# Local analysis tutorial
+# Local analysis
 
 
 ## Overview
@@ -10,9 +10,9 @@ The inputs to the local analysis script include: a reference genome (fasta file)
 It is imparative to set appropriate filters for your dataset, and you should not assume that the filters and filter thresholds in this tutorial can be applied to your data. Please make use of the interactive diagnostic tools built into the script to evaluate your filter strategy. 
 
 
-## How to run the local analysis script
+## How to run the local analysis script, tutorial
 
-Here are instructions for [how to run](readme_local_run.md) the local analysis script.
+Here are instructions for [how to run](readme_local_run.md) the local analysis script. This includes some details on false positive SNPs and real positive SNPs beyond what is included below, make sure to read both. 
 
 
 ## Caveats
