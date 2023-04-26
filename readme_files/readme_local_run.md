@@ -66,7 +66,8 @@ Histograms are a great way to check if your filter thresholds are justified. Mak
 ### Evaluating SNV quality
 
 The function ```plot_interactive_scatter_barplots``` makes an interactive plot, where each dot represents a SNV that passed your filters. Clicking one of the dots will generate a bar chart, where you'll be able to see all basecalls on forward and reverse reads across all of your samples.
-You may need to [change your Spyder preferences](https://stackoverflow.com/questions/23585126/how-do-i-get-interactive-plots-again-in-spyder-ipython-matplotlib) to enable interactive plot viewing. [Example](clickable_scatter.png)
+You may need to [change your Spyder preferences](https://stackoverflow.com/questions/23585126/how-do-i-get-interactive-plots-again-in-spyder-ipython-matplotlib) to enable interactive plot viewing. 
+* [Example](clickable_scatter.png)
 
 The purpose of the interactive plots is to make it easy to tell the difference between high-quality SNV positions, and re-adjust filters as needed. Ideally, you should see loosen up filters until you see questionable SNV positions, and then make them more stringent to remove them. This ensures that you are not missing real SNV positions.
 
@@ -74,7 +75,7 @@ Signatures of high-quality SNV positions include:
 * high read coverage over the SNV position
 * consistent basecalls in forward and reverse reads
 * consitent number of reads aligned in the forward and reverse directions
-[Example_goodpos1](goodpos_example1.png) [Example_goodpos2](goodpos_example2.png)
+* [Example_goodpos1](goodpos_example1.png) [Example_goodpos2](goodpos_example2.png)
 
 Signatures of questionable SNV positions include:
 * impure alleles (alignment issues or contamination issues)
@@ -82,7 +83,7 @@ Signatures of questionable SNV positions include:
 * differences in the number of forward vs reverse reads (alignment issues)
 * lots of SNVs close together on the genome (likely recombination)
 * and more!
-[Example_badpos1](badpos_example.png)
+* [Example_badpos1](badpos_example.png)
 
 ## 5. Make a tree
 
