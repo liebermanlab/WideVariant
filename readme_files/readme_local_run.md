@@ -67,7 +67,7 @@ Histograms are a great way to check if your filter thresholds are justified. Mak
 
 The function ```plot_interactive_scatter_barplots``` makes an interactive plot, where each dot represents a SNV that passed your filters. Clicking one of the dots will generate a bar chart, where you'll be able to see all basecalls on forward and reverse reads across all of your samples.
 You may need to [change your Spyder preferences](https://stackoverflow.com/questions/23585126/how-do-i-get-interactive-plots-again-in-spyder-ipython-matplotlib) to enable interactive plot viewing. 
-* [Example](clickable_scatter.png)
+* [Example clickable scatter](clickable_scatter.png)
 
 The purpose of the interactive plots is to make it easy to tell the difference between high-quality SNV positions, and re-adjust filters as needed. Ideally, you should see loosen up filters until you see questionable SNV positions, and then make them more stringent to remove them. This ensures that you are not missing real SNV positions.
 
