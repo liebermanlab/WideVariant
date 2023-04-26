@@ -84,7 +84,7 @@ Signatures of questionable SNVs include:
 
 The last section of the script prepares data for a parsimony tree. Please note that you will need to have the files ```dnapars.app``` and ```dnapars``` in your working directory ([dnapars](https://evolution.genetics.washington.edu/phylip/doc/dnapars.html) is a parsimony program).
 
-The output is a Newick-formatted tree (```.tree``` file)
+The output is a Nexus-formatted tree (```.tree``` file)
 
 ### Rooting your tree
 
