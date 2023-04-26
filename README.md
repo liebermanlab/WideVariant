@@ -11,10 +11,10 @@ This pipeline and toolkit is used to detect and analyze single nucleotide differ
 	* Enables easy evolutionary analysis, including phylogenetic construction, nonsynonmous vs synonymous mutation counting, and parallel evolution
 
 
-* Inputs: 
+* Inputs (to cluster step): 
 	* short-read sequencing data of closely related bacterial isolates
 	* an annotated reference genome
-* Outputs: 
+* Outputs (of local analysis step): 
 	* table of high-quality SNVs that differentiate isolates from each other
 	* parsimony tree of how the isolates are related to each other 
 
