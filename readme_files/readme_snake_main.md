@@ -3,7 +3,7 @@
 
 ## Overview
 
-This is a tutorial for the Snakemake pipeline portion of Lieberman Lab's SNV-calling pipeline. While pipeline has alternative modes (see below), the core function of the Snakemake pipeline is to process raw sequencing reads (remove adapters and trim reads based on quality), align reads to a reference genome, identify candidate SNV positions, and save data arrays with stats on the alignment of each sample at each candidate SNV position. These data arrays are used downstream in the [local analysis](readme_local_main) step. 
+This is a tutorial for the Snakemake pipeline portion of Lieberman Lab's SNV-calling pipeline. The core function of the Snakemake pipeline is to process raw sequencing reads (remove adapters and trim reads based on quality), align reads to a reference genome, identify candidate SNV positions, and save data arrays with stats on the alignment of each sample at each candidate SNV position. These data arrays are used downstream in the [local analysis](readme_local_main) step. 
 
 
 ### Alternative modes of the Snakemake pipeline
