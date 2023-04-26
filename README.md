@@ -11,7 +11,7 @@ This pipeline and toolkit is used to detect and analyze single nucleotide differ
 	* Enables easy evolutionary analysis, including phylogenetic construction, nonsynonmous vs synonymous mutation counting, and parallel evolution
 
 
-* Inputs (to cluster step): 
+* Inputs (to Snakemake cluster step): 
 	* short-read sequencing data of closely related bacterial isolates
 	* an annotated reference genome
 * Outputs (of local analysis step): 
