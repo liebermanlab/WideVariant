@@ -22,8 +22,8 @@ If you have not used Snakemake before, please [watch this brief intro video](htt
 ### Copy the template Snakemake directory
 
 All necessary files are available in `snakemake_pipeline/` and are described below:
-* `snakemake_pipeline/input/samples.csv` - csv file with one row per sample
-* `snakemake_pipeline/input/experiment_config.yaml` - definded filepaths and variables relevant to this experiment
+* `snakemake_pipeline/samples.csv` - csv file with one row per sample
+* `snakemake_pipeline/experiment_info.yaml` - definded filepaths and variables relevant to this experiment
 * `snakemake_pipeline/Snakefile.py` - Snakemake workflow
 * `snakemake_pipeline/run_snakemake.slurm` - script for batching the Snakemake workflow to a Slurm cluster
 * `snakemake_pipeline/config.yaml` - information on cluster parameters and what computing resources are required by different workflow steps
@@ -57,7 +57,7 @@ Mandatory changes:
 		* The Snakemake workflow will only identify candidate SNVs that differentiate ingroup samples from each other. It will NOT identify candidate SNVs that differentiate only ingroup samples from outgroup samples.
 		* Constraints: Entry must be "0" or "1".
 
-#### `snakemake_pipeline/input/experiment_config.yaml`
+#### `snakemake_pipeline/input/experiment_info.yaml`
 Mandatory changes:
 * change sample_table to path to samples.csv
 * change myscripts_directory to path to "/scripts" folder in this directory
@@ -75,6 +75,7 @@ Mandatory changes:
 Optional changes:
 * Modify the list of nodes to exclude in line `"exclude":"node327,node088",`. 
 * Change dry-run or unlock parameters if desired 
+* Change rule resource requirements
 
 #### `snakemake_pipeline/Snakefile.py` 
 
