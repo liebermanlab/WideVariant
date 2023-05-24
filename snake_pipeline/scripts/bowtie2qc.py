@@ -34,7 +34,7 @@ def main(path_to_samples, reference_genome, current_directory, out_file_string):
 
     # make copy of samples.csv to add to
     print("Copying samples csv...")
-    shutil.copyfile(cwd + "/" + path_to_samples, cwd + "/" + out_file_string + ".csv")
+    shutil.copyfile(path_to_samples, cwd + "/" + out_file_string + ".csv")
 
     # make new columns in csv for the alignment stats
     alignment_stats = pd.read_csv(cwd + "/" + out_file_string + ".csv",index_col=False) # index_col=False needed so that Path does not become row name
