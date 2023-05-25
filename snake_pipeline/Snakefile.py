@@ -3,18 +3,15 @@
 
 
 ''' GLOBAL '''
-import sys
-
 # Global variables: In theory do not need to be changed
+import sys
+SCRIPTS_DIRECTORY = "./scripts"
+REF_GENOME_DIRECTORY = "/scratch/mit_lieberman/reference_genomes"
 CURRENT_DIRECTORY = os.getcwd()
-REF_GENOME_DIRECTORY = config["ref_genome_directory"]
-SCRIPTS_DIRECTORY = config["myscripts_directory"]
 sys.path.insert(0, SCRIPTS_DIRECTORY)
-spls = config["sample_table"]
-
 from gus_helper_functions import *
 from itertools import compress
-spls = config["sample_table"]
+spls = "samples.csv"
 
 
 
@@ -116,62 +113,6 @@ if flag=="assembly":
     input_all.append(expand("Assembly/prokka/{sampleID}/prokka_out.faa",sampleID=SAMPLE_ls))
     input_all.append("Assembly/orthologinfo_filtered/annotation_orthologs.tsv")
 
-# def read_sample_info_CSV(path_to_sample_info_csv):
-#     with open(path_to_sample_info_csv,'r') as f:
-#         this_sample_info = f.readline() # only one line to read
-#     this_sample_info = this_sample_info.strip('#').split(',')
-#     path = this_sample_info[0] # remember python indexing starts at 0
-#     paths = path.split(' ')
-#     sample = this_sample_info[1]
-#     filename = this_sample_info[2]
-#     reference = this_sample_info[3]
-    
-#     return paths, sample, reference, filename
-
-# def get_cutadapt_output(path_to_sample_info_csv):
-    
-#     path_ls, _, _, filenames = read_sample_info_CSV(path_to_sample_info_csv)
-
-#     path_ls_replace = [p.replace('/','_') for p in path_ls]
-    
-#     cutadapt_out = [expand("tmp/{path_ls_replace}_{filenames}_R1_trim.fq.gz", path=path_ls_replace, fn=filenames),
-#                     expand("tmp/{path_ls_replace}_{filenames}_R1_trim.fq.gz", path=path_ls_replace, fn=filenames)]
-#     print(cutadapt_out)
-
-#     return cutadapt_out
-
-# def get_sickle_output(path_to_sample_info_csv):
-
-#     path_ls, _, _, filenames = read_sample_info_CSV(path_to_sample_info_csv)
-
-#     sickle_out = [expand("{path}/{fn}/R1_filt.fq.gz", path=path_ls, fn=filenames),
-#                  expand("{path}/{fn}/R2_filt.fq.gz", path=path_ls, fn=filenames),
-#                  expand("{path}/{fn}/filt_sgls.fq.gz", path=path_ls, fn=filenames),
-#                  expand("{path}/{fn}/sickle_manifest.txt", path=path_ls, fn=filenames)]
-#     print(sickle_out)
-#     return sickle_out
-
-def mdl_input_fwd(wildcards): # returns all paths for forward reads for a given sample
-  [paths,filename]=get_mdl_paths(wildcards.sampleID)
-  fwd=expand("{path_to_raw_data}{fn}/R1_filt.fq.gz", path_to_raw_data=paths, fn=filename)
-  return fwd
-
-def mdl_input_rev(wildcards):# returns all paths for reverse reads for a given sample
-  [paths,filename]=get_mdl_paths(wildcards.sampleID)
-  rev=expand("{path_to_raw_data}{fn}/R2_filt.fq.gz", path_to_raw_data=paths, fn=filename)
-  return rev
-
-def get_mdl_paths(SID): # returns all list of paths and filenames for a given samplename
-  
-  # path_to_sample_info_csv = 'data/SID/sample_info.csv'
-
-  path_ls, _, _, filename = read_sample_info_CSV(f'data/{SID}/sample_info.csv')
-  # is_sample = [int(i == SID) for i in SAMPLE_ls] # boolean which is true when sample_ls == SID
-  # pathstr = list(compress(PATH_ls,is_sample)) # list of paths
-  # path_ls = pathstr.split(' ')
-  # filename = list(compress(FILENAME_ls,is_sample)) # list of paths
-  
-  return path_ls,filename
 
 
 ''' SNAKEMAKE '''
@@ -180,58 +121,12 @@ rule all:
     # Special snakemake rule that defines which output files need to be created by the pipeline. 
     # Snakemake will only execute the steps (rules) necessary to create these output files.
     input:
-        # input_all,
-        expand("data/{sampleID}/R1.filt.fq.gz",sampleID=SAMPLE_ls),
-        expand("data/{sampleID}/R2.filt.fq.gz",sampleID=SAMPLE_ls),
+        input_all,
+
 
 
 # DATA PROCESSING ####################################################################################################
 # Prepare filtered, clean FASTQ samples
-
-
-rule cutadapt:
-  params:
-      manifest="{path_to_raw_data}{fn}/manifest.log",
-  output:
-      fq1o = "{path_to_raw_data}{fn}/R1_trim.fq.gz",
-      fq2o = "{path_to_raw_data}{fn}/R2_trim.fq.gz",
-  conda:
-      "envs/cutadapt.yaml",
-  shell:
-      # NEEDS TO BE OF FORMAT FILENAMER1, FILENAMER2, NOITHING ELSE
-      "cutadapt -a CTGTCTCTTAT --cores=4 "
-               "-o {output.fq1o} "
-               "{wildcards.path_to_raw_data}{wildcards.fn}R1.fastq.gz "
-               "1> {params.manifest} ;"
-      "cutadapt -a CTGTCTCTTAT --cores=4 "
-               "-o {output.fq2o} "
-               "{wildcards.path_to_raw_data}{wildcards.fn}R2.fastq.gz "
-               "1>> {params.manifest} ;"
-
-rule sickle:
-  input:
-      fq1i = rules.cutadapt.output.fq1o,
-      fq2i = rules.cutadapt.output.fq2o,
-  params:
-      manifest="{path_to_raw_data}{fn}/manifest.log",
-      qual=20, # Threshold for trimming based on average quality in a window
-      readlen=50, # Threshold to keep a read based on length after trimming
-  conda:
-      "envs/sickle-trim.yaml",
-  output:
-      fq1o = "{path_to_raw_data}{fn}/R1_filt.fq.gz",
-      fq2o = "{path_to_raw_data}{fn}/R2_filt.fq.gz",
-      fqSo = "{path_to_raw_data}{fn}/filt_sgls.fq.gz",
-  shell:
-      "sickle pe -f {input.fq1i} -r {input.fq2i} "
-                "-t sanger "
-                "-o {output.fq1o} -p {output.fq2o} "
-                "-s {output.fqSo} "
-                "-g -q {params.qual} -l {params.readlen} -x -n "
-                "1>> {params.manifest} ;"
-      "echo 'sickle command line params: minqual={params.qual} minreadlen={params.readlen}' 1>> {params.manifest} ;"
-      "rm {input.fq1i} ;"
-      "rm {input.fq2i} ;"
 
 # Makes symbolic links to data files
 if flag=="case":
@@ -252,46 +147,63 @@ if flag=="case":
                 subprocess.run( f"ln -fs -T {PATH_ls[idx]}/1-Mapping/quals/{SAMPLE_ls[idx]}_ref_{REF_Genome_ls[idx]}_*quals* 1-Mapping/quals/{SAMPLE_ls[idx]}_ref_{REF_Genome_ls[idx]}_outgroup{OUTGROUP_ls[idx]}.quals.pickle.gz" ,shell=True)
                 subprocess.run( f"ln -fs -T {PATH_ls[idx]}/1-Mapping/vcf/{SAMPLE_ls[idx]}_ref_{REF_Genome_ls[idx]}_*variant.vcf.gz 1-Mapping/vcf/{SAMPLE_ls[idx]}_ref_{REF_Genome_ls[idx]}_aligned.sorted.strain.variant.vcf.gz" ,shell=True)
 else:
-
     rule make_data_links:
-      input:
-        fwd=mdl_input_fwd,
-        rev=mdl_input_rev,
-      output:
-        fq1o='data/{sampleID}/R1.filt.fq.gz',
-        fq2o='data/{sampleID}/R2.filt.fq.gz',
-      run:
-        if len(input.fwd) > 1: # if there is more than one file, concatenate and zip
-          fwdstr=' '.join(input.fwd)
-          revstr=' '.join(input.rev)
-          print(f"zcat {fwdstr} | gzip > data/{wildcards.sampleID}/R1.filt.fq.gz")
-          subprocess.run(f"zcat {fwdstr} | gzip > data/{wildcards.sampleID}/R1.filt.fq.gz", shell=True)
-          subprocess.run(f"zcat {revstr} | gzip > data/{wildcards.sampleID}/R2.filt.fq.gz", shell=True)
-        else: # otherwise, just make a link
-          subprocess.run(f"ln -s -T {input.fwd} data/{wildcards.sampleID}/R1.filt.fq.gz", shell=True)
-          subprocess.run(f"ln -s -T {input.rev} data/{wildcards.sampleID}/R2.filt.fq.gz", shell=True)
+      # NOTE: All raw data needs to be names fastq.gz. No fq! The links will be names fq though.
+        input:
+            sample_info_csv = "data/{sampleID}/sample_info.csv",
+        params:
+            links_dir = 'links',
+        output:
+            # Recommend using symbolic links to your likely many different input files
+            fq1 = "links/{sampleID}/R1.fq.gz",
+            fq2 = "links/{sampleID}/R2.fq.gz",
+        run:
+            # Get info out of mini csv file
+            paths, sam, ref, fn = read_sample_info_CSV(input.sample_info_csv)
+            print(paths)
+            print(f"{sam},{ref},{fn}")
+            # Make links ot raw data
+            subprocess.run('mkdir -p links', shell=True)
+            if len(paths)>1: # in case of multiple raw data files for the same sample, combine them into one file
+                cp_append_files(paths, sam, fn, params.links_dir)
+            else: # in case of a single raw data file, make a symbolic link
+                makelink(paths[0], sam, fn, params.links_dir)
 
-    # rule make_data_links:
-    #   # NOTE: All raw data needs to be names fastq.gz. No fq! The links will be names fq though.
-    #     input:
-    #         sample_info_csv = "data/{sampleID}/sample_info.csv",
-    #     params:
-    #         links_dir = 'links',
-    #     output:
-    #         # Recommend using symbolic links to your likely many different input files
-    #         fq1 = "links/{sampleID}/R1.fq.gz",
-    #         fq2 = "links/{sampleID}/R2.fq.gz",
-    #     run:
-    #         # Get info out of mini csv file
-    #         paths, sam, ref, fn = read_sample_info_CSV(input.sample_info_csv)
-    #         print(paths)
-    #         print(f"{sam},{ref},{fn}")
-    #         # Make links ot raw data
-    #         subprocess.run('mkdir -p links', shell=True)
-    #         if len(paths)>1: # in case of multiple raw data files for the same sample, combine them into one file
-    #             cp_append_files(paths, sam, fn, params.links_dir)
-    #         else: # in case of a single raw data file, make a symbolic link
-    #             makelink(paths[0], sam, fn, params.links_dir)
+
+# Removes adapters from reads
+rule cutadapt:
+  input:
+      fq1 = "links/{sampleID}/R1.fq.gz",
+      fq2 = "links/{sampleID}/R2.fq.gz",
+  output:
+      fq1o = "tmp/{sampleID}_R1_trim.fq.gz",
+      fq2o = "tmp/{sampleID}_R2_trim.fq.gz",
+  log:
+      log = "logs/cutadapt_{sampleID}.txt",
+  conda:
+      "envs/cutadapt.yaml",
+  shell:
+      "cutadapt -a CTGTCTCTTAT --cores=4 -o {output.fq1o} {input.fq1} 1> {log};"
+      "cutadapt -a CTGTCTCTTAT --cores=4 -o {output.fq2o} {input.fq2} 1>> {log};"
+
+
+# Trims reads based on quality
+rule sickle2050:
+  input:
+      fq1o = "tmp/{sampleID}_R1_trim.fq.gz",
+      fq2o = "tmp/{sampleID}_R2_trim.fq.gz",
+  output:
+      fq1o = "tmp/{sampleID}_filt/filt1.fq.gz",
+      fq2o = "tmp/{sampleID}_filt/filt2.fq.gz",
+      fqSo = "tmp/{sampleID}_filt/filt_sgls.fq.gz",
+  log:
+      log = "logs/sickle2050_{sampleID}.txt",
+  conda:
+      "envs/sickle-trim.yaml",
+  shell:
+      "sickle pe -g -f {input.fq1o} -r {input.fq2o} -t sanger -o {output.fq1o} -p {output.fq2o} -s {output.fqSo} -q 20 -l 20 -x -n 1> {log} ;"
+
+
 
 
 # MAPPING STEP ####################################################################################################
@@ -318,8 +230,8 @@ if flag=="mapping" or flag=="all":
     # Aligns reads to the reference genome with bowtie2
     rule bowtie2:
         input:
-            fq1 = rules.make_data_links.output.fq1o,
-            fq2 = rules.make_data_links.output.fq2o,
+            fq1 = rules.sickle2050.output.fq1o,
+            fq2 = rules.sickle2050.output.fq2o,
             bowtie2idx = ancient(rules.refGenome_index.output.bowtie2idx) # put here, so rule bowtie2 only executed after rule refGenome_index done
         params:
             refGenome = REF_GENOME_DIRECTORY+"/{reference}/genome_bowtie2",
@@ -550,17 +462,17 @@ if flag=="case" or flag=="all":
             string_sampleID_names = rules.candidate_mutation_table_prep.output.string_sampleID_names, # "2-Case/temp/string_sampleID_names.txt",
             string_outgroup_bool = rules.candidate_mutation_table_prep.output.string_outgroup_bool, # "2-Case/temp/string_outgroup_bool.txt",
         output:
-            cmt = "2-Case/candidate_mutation_table/group_{cladeID}_candidate_mutation_table.npz",
-            #Only include the following two lines if you want to generate coverage matrices
-            cov_raw = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_raw.pickle.gz",
-            cov_norm = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_norm.pickle.gz",            
+            cmt = "2-Case/candidate_mutation_table/group_{cladeID}_candidate_mutation_table.pickle.gz",
+            # Only include the following two lines if you want to generate coverage matrices
+            # cov_raw = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_raw.pickle.gz",
+            # cov_norm = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_norm.pickle.gz",            
         conda:
             "envs/py_for_snakemake.yaml",
         shell:
             # Use this version if you do not want coverage matrices
-            # "python3 {SCRIPTS_DIRECTORY}/build_candidate_mutation_table.py -p {input.positions} -s {input.string_sampleID_names} -g {input.string_outgroup_bool} -q {input.string_quals} -d {input.string_diversity} -o {output.cmt} ;"
+            "python3 {SCRIPTS_DIRECTORY}/build_candidate_mutation_table.py -p {input.positions} -s {input.string_sampleID_names} -g {input.string_outgroup_bool} -q {input.string_quals} -d {input.string_diversity} -o {output.cmt} ;"
             # Use this version if you do want coverage matrices (-c for raw coverage matrix; -n for normalized coverage matrix)
-             "python3 {SCRIPTS_DIRECTORY}/build_candidate_mutation_table.py -p {input.positions} -s {input.string_sampleID_names} -g {input.string_outgroup_bool} -q {input.string_quals} -d {input.string_diversity} -o {output.cmt} -c {output.cov_raw} -n {output.cov_norm} ;"
+            # "python3 {SCRIPTS_DIRECTORY}/build_candidate_mutation_table.py -p {input.positions} -s {input.string_sampleID_names} -g {input.string_outgroup_bool} -q {input.string_quals} -d {input.string_diversity} -o {output.cmt} -c {output.cov_raw} -n {output.cov_norm} ;"
 
 
 
