@@ -180,7 +180,7 @@ rule all:
     # Special snakemake rule that defines which output files need to be created by the pipeline. 
     # Snakemake will only execute the steps (rules) necessary to create these output files.
     input:
-        # input_all,
+        input_all,
         expand("data/{sampleID}/R1.filt.fq.gz",sampleID=SAMPLE_ls),
         expand("data/{sampleID}/R2.filt.fq.gz",sampleID=SAMPLE_ls),
 
