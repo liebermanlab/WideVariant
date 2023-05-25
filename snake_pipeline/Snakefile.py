@@ -550,17 +550,17 @@ if flag=="case" or flag=="all":
             string_sampleID_names = rules.candidate_mutation_table_prep.output.string_sampleID_names, # "2-Case/temp/string_sampleID_names.txt",
             string_outgroup_bool = rules.candidate_mutation_table_prep.output.string_outgroup_bool, # "2-Case/temp/string_outgroup_bool.txt",
         output:
-            cmt = "2-Case/candidate_mutation_table/group_{cladeID}_candidate_mutation_table.pickle.gz",
-            # Only include the following two lines if you want to generate coverage matrices
-            # cov_raw = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_raw.pickle.gz",
-            # cov_norm = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_norm.pickle.gz",            
+            cmt = "2-Case/candidate_mutation_table/group_{cladeID}_candidate_mutation_table.npz",
+            #Only include the following two lines if you want to generate coverage matrices
+            cov_raw = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_raw.pickle.gz",
+            cov_norm = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_norm.pickle.gz",            
         conda:
             "envs/py_for_snakemake.yaml",
         shell:
             # Use this version if you do not want coverage matrices
-            "python3 {SCRIPTS_DIRECTORY}/build_candidate_mutation_table.py -p {input.positions} -s {input.string_sampleID_names} -g {input.string_outgroup_bool} -q {input.string_quals} -d {input.string_diversity} -o {output.cmt} ;"
+            # "python3 {SCRIPTS_DIRECTORY}/build_candidate_mutation_table.py -p {input.positions} -s {input.string_sampleID_names} -g {input.string_outgroup_bool} -q {input.string_quals} -d {input.string_diversity} -o {output.cmt} ;"
             # Use this version if you do want coverage matrices (-c for raw coverage matrix; -n for normalized coverage matrix)
-            # "python3 {SCRIPTS_DIRECTORY}/build_candidate_mutation_table.py -p {input.positions} -s {input.string_sampleID_names} -g {input.string_outgroup_bool} -q {input.string_quals} -d {input.string_diversity} -o {output.cmt} -c {output.cov_raw} -n {output.cov_norm} ;"
+             "python3 {SCRIPTS_DIRECTORY}/build_candidate_mutation_table.py -p {input.positions} -s {input.string_sampleID_names} -g {input.string_outgroup_bool} -q {input.string_quals} -d {input.string_diversity} -o {output.cmt} -c {output.cov_raw} -n {output.cov_norm} ;"
 
 
 
