@@ -359,8 +359,9 @@ if flag=="mapping" or flag=="all":
             DupStats = "1-Mapping/bowtie2/{sampleID}_ref_{reference}_markdup_stats.txt",
         output:
             bamA = "1-Mapping/bowtie2/{sampleID}_ref_{reference}_aligned.sorted.bam",
+            bamAidx = "Mapping/clade_assemblies/3-bowtie2/{sampleID}_ref_{reference}_aligned.sorted.bam.bai",
         conda:
-            "envs/samtools115.yaml",
+            "envs/samtools116.yaml",
         shadow: # avoids leaving leftover temp files esp if job aborted
             "minimal", 
         shell:
@@ -369,15 +370,14 @@ if flag=="mapping" or flag=="all":
             " samtools fixmate -m {params.bamDup} {params.bamDupMate} ;"
             " samtools sort -o {params.bamDupMateSort} {params.bamDupMate} ;"
             " samtools markdup -r -s -f {params.DupStats} -d 100 -m s {params.bamDupMateSort} {output.bamA} ;"
-            " samtools index {output.bamA} ;"
-
+            " samtools index -o {output.bamAidx} {output.bamA} ;"
 
     # Deletes SAM file once BAM file is created (SAM files are very large)
     rule sam2bam_cleanup:
     # must be a to separate rule from sam2bam because rm in sam2bam only deletes link in shadow directory
         input:
             bamA = rules.sam2bam.output.bamA,
-            # bamAidx=rules.sam2bam.output.bamAidx,
+            bamAidx=rules.sam2bam.output.bamAidx,
         params:
             samA = rules.bowtie2.output.samA,
             bamDup = "1-Mapping/bowtie2/{sampleID}_ref_{reference}_aligned_dups.bam",
