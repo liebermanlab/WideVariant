@@ -206,15 +206,14 @@ def read_candidate_mutation_table_pickle_gzip(file_cmt_pickle_gz):
     '''
     
     # Read file
-    with gzip.open(file_cmt_pickle_gz, 'rb') as f:
-        cmt = pickle.load(f)
-        # Object by object
-        sample_names = np.array( cmt.get('sample_names') )
-        p = np.array( cmt.get('p') )
-        counts = np.array( cmt.get('counts') )
-        quals = np.array( cmt.get('quals') ) * -1
-        in_outgroup = np.array( cmt.get('in_outgroup') )
-        indel_counter = np.array( cmt.get('indel_counter') )
+    with open(file_cmt_pickle_gz, 'rb') as f:
+        cmt = np.load(f)
+        sample_names = np.array(cmt['sample_names'])
+        p = np.array(cmt['p']).transpose()
+        counts = np.array(cmt['counts'])
+        quals = (np.array(cmt['quals']) * -1)
+        in_outgroup = np.array(cmt['in_outgroup'])
+        indel_counter = np.array(cmt['indel_counter'])
 
     # Return arrays
     return [ quals, p, counts, in_outgroup, sample_names, indel_counter ]
