@@ -103,7 +103,7 @@ if flag=="mapping":
     input_all.append(expand("1-Mapping/bowtie2_qc/alignment_stats_ref_{references}.csv",references=set(REF_Genome_ls)))
 if flag=="case" or flag=="all":
     input_all.append(expand("1-Mapping/bowtie2_qc/alignment_stats_ref_{references}.csv",references=set(REF_Genome_ls)))
-    input_all.append(expand("2-Case/candidate_mutation_table/group_{cladeID}_candidate_mutation_table.pickle.gz",cladeID=UNIQ_GROUP_ls))
+    input_all.append(expand("2-Case/candidate_mutation_table/group_{cladeID}_candidate_mutation_table.npz",cladeID=UNIQ_GROUP_ls))
     # Include the following two lines ONLY if you also want coverage matrices. 
     # Be sure include -c and -n options when py script is called candidate_mutation_table rule and to uncomment the two extra outputs in the candidate_mutation_table rule.
     # input_all.append(expand("2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_raw.pickle.gz",cladeID=UNIQ_GROUP_ls))
@@ -180,7 +180,7 @@ rule all:
     # Special snakemake rule that defines which output files need to be created by the pipeline. 
     # Snakemake will only execute the steps (rules) necessary to create these output files.
     input:
-        # input_all,
+        input_all,
         expand("data/{sampleID}/R1.filt.fq.gz",sampleID=SAMPLE_ls),
         expand("data/{sampleID}/R2.filt.fq.gz",sampleID=SAMPLE_ls),
 
