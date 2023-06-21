@@ -345,7 +345,7 @@ if flag=="mapping" or flag=="all":
         conda:
             "envs/bowtie2qc.yaml",
         shell:
-            "python3 {SCRIPTS_DIRECTORY}/bowtie2qc_noninteractive.py -s {spls} -r {wildcards.reference} -d {CURRENT_DIRECTORY} -o {params.outfile_noextension}"
+            "python3 {SCRIPTS_DIRECTORY}/bowtie2qc.py -s {spls} -r {wildcards.reference} -d {CURRENT_DIRECTORY} -o {params.outfile_noextension}"
 
 
     # Compresses SAM file into BAM file (and removes duplicate reads)
