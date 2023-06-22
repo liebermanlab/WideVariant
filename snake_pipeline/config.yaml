@@ -6,7 +6,7 @@
 
 snakefile: Snakefile.py
 use-conda: True
-conda-frontend: conda
+conda-frontend: mamba
 rerun-incomplete: True
 restart-times: 1
 jobs: 400
@@ -23,21 +23,21 @@ cluster:
   mkdir -p ./logs/ &&
   sbatch
     --partition={resources.partition}
-    --reservation=lierberman-test-eng
     --ntasks={resources.ntasks}
     --cpus-per-task={resources.cpus_per_task}
     --mem={resources.mem}
     --time={resources.time}
     --job-name="SM.{rule}"
-    --output="./logs/%j_{rule}.out.txt"
+    --output="./logs/%j_{rule}.err.txt"
     --error="./logs/%j_{rule}.err.txt"
     --exclude="node035,node390"
     --mail-user="YOUR_EMAIL_HERE"
     --mail-type="FAIL"
 
+#note that resource names should use underscore _ instead of dash -
 
 default-resources:
-   - partition="sched_mit_hill"
+   - partition="sched_mit_tami"
    - time="1:00:00"
    - ntasks=1
    - cpus_per_task=1
@@ -55,7 +55,7 @@ set-resources:
    - sickle:cpus_per_task=1
    - sickle:time="04:00:00"
    # bowtie2
-   - bowtie2:mem=36000
+   - bowtie2:mem=64000
    - bowtie2:cpus_per_task=8
    - bowtie2:time="02:00:00"
    # sam2bam
@@ -63,27 +63,26 @@ set-resources:
    - sam2bam:cpus_per_task=1
    - sam2bam:time="12:00:00"
    # mpileup2vcf
-   - mpileup2vcf:mem=64000
+   - mpileup2vcf:mem=60000
    - mpileup2vcf:cpus_per_task=1
    - mpileup2vcf:time="12:00:00"
    # pileup2diversity_matrix
-   - pileup2diversity_matrix:mem=64000
+   - pileup2diversity_matrix:mem=60000
    - pileup2diversity_matrix:cpus_per_task=1
    - pileup2diversity_matrix:time="12:00:00"
    # variants2positions
-   - variants2positions:mem=64000
-   - variants2positions:mem-per-cpu=64000
+   - variants2positions:mem=60000
+   - variants2positions:mem_per_cpu=60000
    - variants2positions:cpus_per_task=1
    - variants2positions:time="02:00:00"
    # combine_positions
-   - combine_positions:partition="sched_mit_hill"
-   - combine_positions:mem=64000
-   - combine_positions:mem-per-cpu=64000
+   - combine_positions:mem=60000
+   - combine_positions:mem_per_cpu=60000
    - combine_positions:cpus_per_task=1
    - combine_positions:time="02:00:00"
    # build_data_links
    - build_data_links:mem=24000
-   - build_data_links:mem-per-cpu=24000
+   - build_data_links:mem_per_cpu=24000
    - build_data_links:cpus_per_task=10
    - build_data_links:time="12:00:00"
    # kraken2
@@ -97,7 +96,6 @@ set-resources:
    # sumstats
    - sumstats:mem=10000
    # prokka
-   - prokka:partition="sched_mit_hill"
    - prokka:mem=100G
    - prokka:cpus_per_task=16
    - prokka:time="04:00:00"

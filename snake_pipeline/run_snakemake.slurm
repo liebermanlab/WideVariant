@@ -1,7 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name widevariant.main
 #SBATCH -p sched_mit_hill
-#SBATCH --reservation lierberman-test-eng
 #SBATCH -n 1
 #SBATCH --time=12:00:00
 #SBATCH --mem=8GB
