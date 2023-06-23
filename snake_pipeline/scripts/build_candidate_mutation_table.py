@@ -116,12 +116,8 @@ def main(path_to_p_file, path_to_sample_names_file, path_to_outgroup_boolean_fil
     fname = pwd + '/' + path_to_outgroup_boolean_file
     with open(fname, 'r') as f:
         in_outgroup_str = f.read().splitlines()
-    in_outgroup = np.array(in_outgroup_str).reshape(1, len(in_outgroup_str))
-    # fid = open( fname, "r" ) # Input is space separated text file, in one line
-    # in_outgroup_string = fid.readline().split()
-    # in_outgroup=np.array(in_outgroup_string)
-    # in_outgroup = in_outgroup.reshape(1,len(in_outgroup)) # reshape 2d array for analysis.py: 1row and numSamples cols
-    # fid.close()
+    
+    in_outgroup = np.asarray([s == '1' for s in in_outgroup_str], dtype=bool).reshape(1, len(in_outgroup_str))
 
     ## Quals: quality score (relating to sample purity) at each position for all samples
     print('Gathering quality scores at each candidate position...')
@@ -157,6 +153,7 @@ def main(path_to_p_file, path_to_sample_names_file, path_to_outgroup_boolean_fil
     all_coverage_per_bp = np.zeros((GenomeLength, numSamples), dtype='uint')
     indel_counter = np.zeros((2, len(p), numSamples), dtype='uint')
 
+
     for i in range(numSamples):
         print('Loading counts matrix for sample: ' + str(i))
         print('Filename: ' + paths_to_diversity_files[i])
@@ -169,6 +166,7 @@ def main(path_to_p_file, path_to_sample_names_file, path_to_outgroup_boolean_fil
 
         indel_counter[:, :, i] = data[p - 1, 38:40].T  # Num reads supporting indels and reads supporting deletions
         # -1 convert position to index
+
 
     # Normalize coverage by sample and then position; ignore /0 ; turn resulting inf to 0
 
@@ -190,7 +188,15 @@ def main(path_to_p_file, path_to_sample_names_file, path_to_outgroup_boolean_fil
             array_cov_norm_scaled = (np.round(array_cov_norm, 3) * 1000).astype('int64')
             print(array_cov_norm_scaled.dtype)
 
-    # Save matrices
+    # Reshape & save matrices
+
+    Quals = Quals.transpose() #quals: num_samples x num_pos
+    p = p.transpose() #p: num_pos
+    counts = counts.swapaxes(0,2) #counts: num_samples x num_pos x 8
+    in_outgroup = in_outgroup.flatten() #in_outgroup: num_samples 
+    SampleNames = SampleNames #sampleNames: num_samples
+    indel_counter = indel_counter.swapaxes(0,2) #indel_counter: num_samples x num_pos x 2
+
 
     outdir = os.path.dirname(path_to_candidate_mutation_table)
     if not os.path.exists(outdir):
@@ -198,12 +204,14 @@ def main(path_to_p_file, path_to_sample_names_file, path_to_outgroup_boolean_fil
 
     if flag_cov_raw:
         print("Saving " + path_to_cov_mat_raw)
-        with gzip.open(path_to_cov_mat_raw, 'wb') as f:
+        all_coverage_per_bp = all_coverage_per_bp.transpose() #all_coverage_per_bp: num_samples x num_pos
+        with open(path_to_cov_mat_raw, 'wb') as f:
             np.savez_compressed(path_to_cov_mat_raw, all_coverage_per_bp=all_coverage_per_bp)
 
     if flag_cov_norm:
         print("Saving " + path_to_cov_mat_norm)
-        with gzip.open(path_to_cov_mat_norm, 'wb') as f:
+        array_cov_norm_scaled = array_cov_norm_scaled.transpose() #array_cov_norm_scaled: num_samples x num_pos
+        with open(path_to_cov_mat_norm, 'wb') as f:
             np.savez_compressed(path_to_cov_mat_norm, array_cov_norm_scaled=array_cov_norm_scaled)
 
     CMT = {'sample_names': SampleNames,

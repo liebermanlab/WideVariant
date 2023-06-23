@@ -520,7 +520,7 @@ if flag=="case" or flag=="all":
             with open( output.string_sampleID_names ,"w") as f: 
                 print(*params.sampleID_names, sep="\n", file=f)
             with open( output.string_outgroup_bool ,"w") as f: 
-                print(*params.outgroup_bool, sep=" ", file=f)
+                print(*params.outgroup_bool, sep="\n", file=f)
 
 
     # Generates a list of candidate SNV positions based on candidate SNV positions across ingroup samples
@@ -552,8 +552,8 @@ if flag=="case" or flag=="all":
         output:
             cmt = "2-Case/candidate_mutation_table/group_{cladeID}_candidate_mutation_table.npz",
             #Only include the following two lines if you want to generate coverage matrices
-            cov_raw = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_raw.pickle.gz",
-            cov_norm = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_norm.pickle.gz",            
+            cov_raw = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_raw.npz",
+            cov_norm = "2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_norm.npz",            
         conda:
             "envs/py_for_snakemake.yaml",
         shell:
