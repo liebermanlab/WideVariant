@@ -184,6 +184,40 @@ NTs_list_without_N_to_idx_dict = { 'A':0, 'T':1, 'C':2, 'G':3 }
 
 # Import file
 
+def read_candidate_mutation_table_npz(file_cmt_npz):
+    '''
+    Read candidate_mutation_table.pickle.gz.npz file (new version).
+    
+    NOTES
+    -----
+
+        New dimensions for candidate mutation table data:
+            
+            quals: num_samples x num_pos
+            p: num_pos
+            counts: num_samples x num_pos x 8
+            in_outgroup: num_samples 
+            sampleNames: num_samples
+            indel_counter: num_samples x num_pos x 2
+    
+        For importing old candidate mutation tables, please use the function
+        read_old_candidate_mtuation_table_pickle_gzip instead.
+
+    '''
+    
+    # Read file
+    with open(file_cmt_npz, 'rb') as f:
+        cmt = np.load(f)
+        sample_names = np.array(cmt['sample_names'])
+        p = np.array(cmt['p'])
+        counts = np.array(cmt['counts'])
+        quals = (np.array(cmt['quals']) * -1)
+        in_outgroup = np.array(cmt['in_outgroup'],dtype=bool).flatten()
+        indel_counter = np.array(cmt['indel_counter'])
+
+    # Return arrays
+    return [ quals, p, counts, in_outgroup, sample_names, indel_counter ]
+
 def read_candidate_mutation_table_pickle_gzip(file_cmt_pickle_gz):
     '''
     Read candidate_mutation_table.pickle.gz file (new version).
@@ -206,18 +240,18 @@ def read_candidate_mutation_table_pickle_gzip(file_cmt_pickle_gz):
     '''
     
     # Read file
-    with open(file_cmt_pickle_gz, 'rb') as f:
-        cmt = np.load(f)
-        sample_names = np.array(cmt['sample_names'])
-        p = np.array(cmt['p']).transpose()
-        counts = np.array(cmt['counts'])
-        quals = (np.array(cmt['quals']) * -1)
-        in_outgroup = np.array(cmt['in_outgroup'])
-        indel_counter = np.array(cmt['indel_counter'])
+    with gzip.open(file_cmt_pickle_gz, 'rb') as f:
+        cmt = pickle.load(f)
+        # Object by object
+        sample_names = np.array( cmt.get('sample_names') )
+        p = np.array( cmt.get('p') )
+        counts = np.array( cmt.get('counts') )
+        quals = np.array( cmt.get('quals') ) * -1
+        in_outgroup = np.array( cmt.get('in_outgroup') )
+        indel_counter = np.array( cmt.get('indel_counter') )
 
     # Return arrays
     return [ quals, p, counts, in_outgroup, sample_names, indel_counter ]
-
 
 def read_old_candidate_mutation_table_pickle_gzip(file_cmt_pickle_gz):
     '''
@@ -397,7 +431,7 @@ class cmt_data_object:
         # Candidate SNV positions
         # p
         try:
-            if positions_list.dtype.type == np.int_:
+            if np.issubdtype(positions_list.dtype, np.integer):
                 self.p = positions_list # candidate SNV positions on genome
                 self.num_pos = len( self.p );
                 print( "Number of genome positions in candidate mutation table: " + str(self.num_pos) + "." )
@@ -409,7 +443,7 @@ class cmt_data_object:
         # Candidate SNV statistics from snakemake step
         # counts
         try:
-            if counts_array.dtype.type == np.int_:
+            if np.issubdtype(counts_array.dtype, np.integer):
                 if counts_array.shape == ( self.num_samples,self.num_pos,8):
                     self.counts = counts_array
                 else:
@@ -420,7 +454,7 @@ class cmt_data_object:
             raise Exception("Argument counts_array must be a numpy array.")
         # quals
         try:
-            if quals_array.dtype.type == np.int_:
+            if np.issubdtype(quals_array.dtype, np.integer):
                 if quals_array.shape == ( self.num_samples,self.num_pos):
                     self.quals = quals_array
                 else:
@@ -431,7 +465,7 @@ class cmt_data_object:
             raise Exception("Argument quals_array must be a numpy array.")
         # indel_stats
         try:
-            if indel_stats_array.dtype.type == np.int_:
+            if np.issubdtype(indel_stats_array.dtype, np.integer):
                 if indel_stats_array.shape == ( self.num_samples,self.num_pos,2):
                     self.indel_stats = indel_stats_array
                 else:
@@ -538,8 +572,17 @@ class cmt_data_object:
 
 # Import file
 
-def read_cov_mat_gzip( raw_cov_mat_file ):
+def read_cov_mat_npz( raw_cov_mat_file ):
     '''Loads raw coverage matrix from file.'''
+    
+    # Reads from file
+    with open(raw_cov_mat_file, 'rb') as f:
+        raw_cov_mat_npz = np.load(f,allow_pickle=True)
+        raw_cov_mat = raw_cov_mat_npz['all_coverage_per_bp']
+    return raw_cov_mat
+
+def read_cov_mat_gzip( raw_cov_mat_file ):
+    '''Loads raw coverage matrix from old version of file.'''
     
     # Reads from file
     with gzip.open(raw_cov_mat_file, 'rb') as f:
@@ -644,7 +687,7 @@ class cov_data_object_simple:
         self.contig_lengths = contig_lengths 
         
         # Confirm dimensions of raw coverage matrix are correct
-        if raw_cov_mat.shape == ( self.num_samples,self.genome_length):
+        if raw_cov_mat.shape != ( self.num_samples,self.genome_length):
             raise Exception("Raw coverage array dimensions are " + str(raw_cov_mat.shape) + ", but should be (" + str(self.num_samples) + ", " + str(self.genome_length) + ")." )
         
         # Compute median coverage per contig per sample
@@ -655,7 +698,7 @@ class cov_data_object_simple:
                 c_end = contig_starts[idx+1]
             else:
                 c_end = genome_length
-            np.median( raw_cov_mat[c_start:c_end,:], axis=0, out=self.median_coverage_by_contig[:,idx] )
+            np.median( raw_cov_mat[:,c_start:c_end], axis=1, out=self.median_coverage_by_contig[:,idx] )
             
         # Compute copy number per contig per sample
         self.copy_number_by_contig = np.zeros( ( self.num_samples, self.num_contigs ) ) # init
@@ -815,7 +858,7 @@ class cov_data_object( cov_data_object_simple ):
        ''' Filters samples and updates all coverage data objects attributes accordingly. '''
        # Same method as superclass, but also downsizes attribute raw_cov_mat
        super().filter_samples( samples_to_keep_bool )
-       self.raw_cov_mat = self.raw_cov_mat[:,samples_to_keep_bool]
+       self.raw_cov_mat = self.raw_cov_mat[samples_to_keep_bool,:]
  
            
            
@@ -837,7 +880,7 @@ class cov_data_object( cov_data_object_simple ):
         for idx in np.arange(num_cov_bins):
             bin_start_idx = cov_bins[idx]-1
             bin_end_idx = cov_bins[idx+1]-1
-            cov_trace_data[:,idx] = np.mean( self.raw_cov_mat[bin_start_idx:bin_end_idx,:], axis=0 ) / self.get_median_cov_of_chromosome()
+            cov_trace_data[:,idx] = np.mean( self.raw_cov_mat[:,bin_start_idx:bin_end_idx], axis=1 ) / self.get_median_cov_of_chromosome()
         
         # Make a plot
         plt.clf() # reset plot axes
@@ -1214,7 +1257,7 @@ def get_genome_stats_from_fasta( dir_ref_genome ):
     return [ contig_starts, contig_names, genome_length, genome_seq ]
 
 
-def parse_gff( dir_ref_genome, contig_names, ortholog_info_series=pd.Series() ):
+def parse_gff( dir_ref_genome, contig_names, ortholog_info_series=pd.Series(dtype='float64') ):
     '''
     This function reads genome annotations from a gff file.
     
@@ -1242,26 +1285,27 @@ def parse_gff( dir_ref_genome, contig_names, ortholog_info_series=pd.Series() ):
         # 2. Only read gff if dataframe does not already exist. #TODO
 
 
-    # Print warning regarding "phase" field in GFF
-    print("""
-          ! ! ! Warning (from Arolyn) ! ! !
-          This GFF parser function assumes that the "phase" of a coding 
-          sequence (CDS) is '0', i.e. that there are no extra bases before the
-          start codon that need to be truncated before translation. This is 
-          consistent with prokka annotations which always report a phase of 0
-          in the GFFs. This is also necessary for RAST annotations which report
-          the phase relative to the contig, not the CDS. However, I do not know
-          why an older version of this function used the "phase" field from the
-          GFF. It is possible that this field is necessary to correctly
-          translate some amino acid sequences. If this is the case with your
-          GFF, you can uncomment the section that uses the phase as reported
-          in the GFF. A good reality check would be to look at the dataframe in
-          the 'annotations' attribute of your reference genome and see if the 
-          start and stop codons are in reasonable places. 
-          """)
+    # # Print warning regarding "phase" field in GFF
+    # print("""
+    #       ! ! ! Warning (from Arolyn) ! ! !
+    #       This GFF parser function assumes that the "phase" of a coding 
+    #       sequence (CDS) is '0', i.e. that there are no extra bases before the
+    #       start codon that need to be truncated before translation. This is 
+    #       consistent with prokka annotations which always report a phase of 0
+    #       in the GFFs. This is also necessary for RAST annotations which report
+    #       the phase relative to the contig, not the CDS. However, I do not know
+    #       why an older version of this function used the "phase" field from the
+    #       GFF. It is possible that this field is necessary to correctly
+    #       translate some amino acid sequences. If this is the case with your
+    #       GFF, you can uncomment the section that uses the phase as reported
+    #       in the GFF. A good reality check would be to look at the dataframe in
+    #       the 'annotations' attribute of your reference genome and see if the 
+    #       start and stop codons are in reasonable places. 
+    #       """)
     
     # Find gff file:
     gff_file = glob.glob(dir_ref_genome + '/*.gff*')
+    
     if len(gff_file) != 1:
         raise ValueError('Either no file or more than 1 *gff file found in ' + dir_ref_genome)
     print( gff_file  )
@@ -1901,7 +1945,7 @@ def make_calls_qc_heatmaps( my_cmt, my_calls, save_plots_bool, dir_save_fig ):
         raise Exception("Error! ")
     if my_cmt.num_pos != my_calls.num_pos:
         raise Exception("")
-    if my_calls.num_pos > 100:
+    if my_calls.num_pos > 300:
         raise Exception("Error! Too many SNV positions (n=" + str(my_calls.num_pos) + ") to plot.")
         # Note: A better alternative would be to plot a subset, e.g. every x 
         # SNVs, to give an overview of SNV quality. #TODO

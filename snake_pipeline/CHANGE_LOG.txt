@@ -3,6 +3,11 @@
 
 Add list of changes made for this version.
 
+=========CHANGE LOG=========
+=====Chris, 2023.06.21=====
+
+Added hackathon config functionality and resolved issues with migration to engaging.
+
 
 =========CHANGE LOG=========
 =====Arolyn/Evan, 2022.10.31=====

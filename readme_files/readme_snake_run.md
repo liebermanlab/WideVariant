@@ -22,11 +22,11 @@ If you have not used Snakemake before, please [watch this brief intro video](htt
 ### Copy the template Snakemake directory
 
 All necessary files are available in `snakemake_pipeline/` and are described below:
-* `snakemake_pipeline/samples_all.csv` - csv file with one row per sample
+* `snakemake_pipeline/samples.csv` - csv file with one row per sample
+* `snakemake_pipeline/experiment_info.yaml` - definded filepaths and variables relevant to this experiment
 * `snakemake_pipeline/Snakefile.py` - Snakemake workflow
-* `snakemake_pipeline/myjob.slurm` - script for batching the Snakemake workflow to a Slurm cluster
-* `snakemake_pipeline/snakemakeslurm.sh` - script for running the Snakemake workflow
-* `snakemake_pipeline/cluster.slurm.json` - information on what computing resources are required by different workflow steps
+* `snakemake_pipeline/run_snakemake.slurm` - script for batching the Snakemake workflow to a Slurm cluster
+* `snakemake_pipeline/config.yaml` - information on cluster parameters and what computing resources are required by different workflow steps
 * `snakemake_pipeline/scripts/` - scripts called by snakemake
 * `snakemake_pipeline/envs/` - conda environments used by snakemake
 
@@ -37,10 +37,9 @@ Make a copy of all of these files and directories in the directory on the cluste
 
 Some of the files in the template directory must be modified according to the guidelines below.
 
-#### `snakemake_pipeline/samples_all.csv`
+#### `snakemake_pipeline/input/samples.csv`
 
 Mandatory changes:
-* Rename `samples_all.csv` to `samples.csv`
 * Fill in the csv with one row per sample and populate all columns
 	* Path: the path to the directory where your raw data files are located
 		* If you sequenced your sample more than once, then you can list directories to your sequencing data separated by spaces, e.g. "/path/to/seq/run/1/ /path/to/seq/run/2/". Note that the FileName in each directory must be the same.
@@ -58,11 +57,30 @@ Mandatory changes:
 		* The Snakemake workflow will only identify candidate SNVs that differentiate ingroup samples from each other. It will NOT identify candidate SNVs that differentiate only ingroup samples from outgroup samples.
 		* Constraints: Entry must be "0" or "1".
 
+#### `snakemake_pipeline/input/experiment_info.yaml`
+Mandatory changes:
+* change sample_table to path to samples.csv
+* change myscripts_directory to path to "/scripts" folder in this directory
+
+* change experiment_name, ref_genome_directory if needed
+
+#### `snakemake_pipeline/config.yaml`
+NOTE: this file may not be renamed
+
+Mandatory changes:
+* Put your own email in line `"mail-user":"YOUR_EMAIL_HERE",`
+* change configfile to point to experiment_config.yaml for this experiment
+* change mkdir, --output and --error to point to log folder for this experiment
+
+Optional changes:
+* Modify the list of nodes to exclude in line `"exclude":"node327,node088",`. 
+* Change dry-run or unlock parameters if desired 
+* Change rule resource requirements
+
 #### `snakemake_pipeline/Snakefile.py` 
 
 Mandatory changes:
 * Check to make sure the variable `flag` is set to `"all"`. 
-* Confirm that the variable `REF_GENOME_DIRECTORY` is the path to the directory containing all of the reference genome directories in column `Reference` in `samples.csv`.
 
 Optional changes:
 * If you would like to generate raw coverage matrices (in addition to a candidate mutation table), then:
@@ -72,7 +90,7 @@ Optional changes:
 	* uncomment the line `input_all.append(expand("2-Case/candidate_mutation_table/group_{cladeID}_coverage_matrix_norm.pickle.gz",cladeID=UNIQ_GROUP_ls))`
 	* modify the rule `candidate_mutation_table` (see comments in `Snakefile.py`)
 
-#### `snakemake_pipeline/myjob.slurm` 
+#### `snakemake_pipeline/run_snakemake.slurm` 
 
 Mandatory changes:
 * Put your own email in line `#SBATCH --mail-user=YOUR_EMAIL_HERE`
@@ -80,21 +98,6 @@ Mandatory changes:
 
 Optional changes:
 * Modify the list of nodes to exclude in line `#SBATCH --exclude=node327`. Nodes can be separated by commas, e.g. `node062,node327,node304`. This is only necessary if there are problematic nodes on the cluster that you wish to avoid.
-
-#### `snakemake_pipeline/snakemakeslurm.sh` 
-
-Optional changes:
-* You may modify the parameter `--restart-times 1`. This tells Snakemake how many times to re-batch a job if it fails. This number should be 0 if you are testing code, so you don't waste computing resources. This number can be higher if you are running a lot of samples through the Snakemake workflow and expect some node failures along the way.  
-
-#### `snakemake_pipeline/cluster.slurm.json`
-
-Mandatory changes:
-* Put your own email in line `"mail-user":"YOUR_EMAIL_HERE",`
-
-Optional changes:
-* Modify the list of nodes to exclude in line `"exclude":"node327,node088",`. 
-
-
 
 ## 2. Install conda and Snakemake
 
