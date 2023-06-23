@@ -48,7 +48,7 @@ VERSION HISTORY:
 
 
 @author: Lieberman Lab at MIT. Authors include: Tami Lieberman, Idan Yelin, 
-Felix Key, Arolyn Conwill, A. Delphine Tripp, Evan Qu, Laura Markey
+Felix Key, Arolyn Conwill, A. Delphine Tripp, Evan Qu, Laura Markey, Chris Mancuso
 
 """
 
@@ -92,7 +92,7 @@ samples_to_exclude = [] # option to exclude specific samples manually
 
 # Make subdirectory for this dataset
 dir_output = 'output'
-os.system( "mkdir -p " + dir_output );
+os.system( "mkdir " + dir_output );
 
 
 
@@ -101,13 +101,13 @@ os.system( "mkdir -p " + dir_output );
 # Import candidate mutation table data generated in Snakemake
 
 # Use this version for updated candidate mutation table matrices
-# [quals,p,counts,in_outgroup,sampleNames,indel_counter] = \
-#     snv.read_candidate_mutation_table_pickle_gzip(cmtFile) 
+[quals,p,counts,in_outgroup,sampleNames,indel_counter] = \
+    snv.read_candidate_mutation_table_npz(cmtFile) 
 
 
-# Use this version for old candidate mutation table matrices
-[quals,p,counts,in_outgroup,sample_names,indel_counter] = \
-    snv.read_old_candidate_mutation_table_pickle_gzip( data_file_cmt ) 
+# # Use this version for old candidate mutation table matrices
+# [quals,p,counts,in_outgroup,sample_names,indel_counter] = \
+#     snv.read_old_candidate_mutation_table_pickle_gzip( data_file_cmt ) 
 
 
 # Create instance of candidate mutation table class
@@ -132,7 +132,7 @@ my_rg_annot_0 = my_rg_annot[0]
 #%% Process raw coverage matrix
 
 # Create instance of simple coverage class (just a summary of coverage matrix data to save memory)
-# my_cov = snv.cov_data_object_simple( snv.read_cov_mat_gzip( covFile ), 
+# my_cov = snv.cov_data_object_simple( snv.read_cov_mat_npz( covFile ), 
 #                                     my_cmt.sample_names, 
 #                                     my_rg.genome_length, 
 #                                     my_rg.contig_starts, 
@@ -140,7 +140,7 @@ my_rg_annot_0 = my_rg_annot[0]
 #                                     )
 
 # Create instance of full coverage matrix class (includes full coverage matrix as attribute)
-my_cov = snv.cov_data_object( snv.read_cov_mat_gzip( data_file_cov ), \
+my_cov = snv.cov_data_object( snv.read_cov_mat_npz( data_file_cov ), \
                              my_cmt.sample_names, \
                              my_rg.genome_length, \
                              my_rg.contig_starts, \
