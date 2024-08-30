@@ -481,10 +481,10 @@ class cmt_data_object:
         np.sum( self.counts, axis=2, out=self.coverage ) # compute with specified output
         # forward read coverage
         self.fwd_cov = np.zeros( (self.num_samples,self.num_pos), dtype='int') # init forward coverage array
-        np.sum( self.counts[:,:,0:3], axis=2, out=self.fwd_cov ) # compute with specified output
+        np.sum( self.counts[:,:,0:4], axis=2, out=self.fwd_cov ) # compute with specified output
         # reverse read coverage
         self.rev_cov = np.zeros( (self.num_samples,self.num_pos), dtype='int') # init reverse coverage array
-        np.sum( self.counts[:,:,4:7], axis=2, out=self.rev_cov ) # compute with specified output
+        np.sum( self.counts[:,:,4:8], axis=2, out=self.rev_cov ) # compute with specified output
         
         # Compute major and minor allele identities and frequencies
         # major_nt, minor_nt, major_nt_freq, minor_nt_freq
