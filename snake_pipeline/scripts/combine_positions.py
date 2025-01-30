@@ -12,7 +12,7 @@ import gzip
 import gus_helper_functions as ghf
 
 #%%
-def chrpos2index(chrpos,chr_starts):
+def chrpos2index(chrpos,chr_starts,genomelength=np.nan):
     '''Python version of chrpos2index.m
 
     Args:
@@ -23,14 +23,20 @@ def chrpos2index(chrpos,chr_starts):
         p (arr): Vector of position indexes.
 
     '''
-    if np.size(chrpos,0) < np.size(chrpos,1):
+    if (np.size(chrpos, 1) != 2) & (np.size(chrpos, 0) == 2):
         chrpos=chrpos.T
         print('Reversed orientation of chrpos')
+    elif (np.size(chrpos, 1) != 2) & (np.size(chrpos, 0) != 2):
+        print('Wrong input format given. Provide np.array with shape (p, 2)')
+        return
         
     if len(chr_starts) == 1:
         p=chrpos[:,1]
     else:
         p=chr_starts[chrpos[:,0]-1]+chrpos[:,1]
+    if not np.isnan(genomelength) and any(p >= genomelength):
+        print('Invalid genome positions given with positions larger than genome length')
+        return sys.exit()
 
     return p
 
@@ -56,10 +62,10 @@ def generate_positions_snakemake(positions_files_list, REFGENOMEDIRECTORY):
         with gzip.open(positions_files_list[i].rstrip('\n'),"rb") as f:
             positions=pickle.load(f)
         
-        if len(positions)>2:
-            x=chrpos2index(positions,chr_starts)
+        #if len(positions)>2:
+        x=chrpos2index(positions,chr_starts)
             
-            timesvariant[x]=timesvariant[x]+1
+        timesvariant[x]=timesvariant[x]+1
     
     
     #Keep positions that vary from the reference in at least one sample but
